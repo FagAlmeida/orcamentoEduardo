@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Sam Esquadrias</title>
+
+    <style>
+        html, body {
+            height: auto;
+            margin: 0;
+            padding: 0;
+            background-color: #990d0d;
+        }
+
+        body {
+            background: url("{{ url_for('static', filename='img/fundo.jpg') }}") no-repeat center top;
+            background-size: 100% 45%;
+            background-attachment: local;
+            background-position: center 160px;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: rgba(182, 8, 8, 0.9);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 2px 5px rgba(236, 233, 233, 0.1);
+            margin-top: -10px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #f3e3e3;
+            margin: 0;
+        }
+
+        nav {
+            background-color: rgba(179, 13, 13, 0.9);
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 2px 5px rgba(134, 3, 3, 0.1);
+            margin-top: -10px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #b10404;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 15px;
+            transition: color 0.3s;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover {
+            color: #155396;
+        }
+
+        .conteudo {
+            padding: 30px;
+            text-align: center;
+            color: rgb(37, 34, 34);
+            min-height: 95vh;
+        }
+
+        #album {
+            background: url("{{ url_for('static', filename='img/fundo2.jpg') }}") no-repeat center center;
+            background-size: contain;
+            background-attachment: local;
+            width: 107.8%;
+            min-height: 110vh;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            padding: 100px 0;
+            margin-left: -150px;
+            margin-top: 100px;
+            background-position: center 160px;
+        }
+
+        .galeria {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: nowrap;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            margin-left: -500px;
+            height: 1100px;
+        }
+
+        .galeria img {
+            width: 700px;
+            height: 700px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .galeria button {
+            background-color: #b10404;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .galeria button:hover {
+            background-color: #700202;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Bem-vindo à Sam Esquadrias!</h1>
+        <h1>Serviços e manutenção em alumínio, janelas e box.</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('infop') }}">Realize seu orçamento</a></li>
+            <li><a href="javascript:void(0)" onclick="rolarPara(1400)">Conhecer meus trabalhos</a></li>
+        </ul>
+    </nav>
+
+    <div class="conteudo">
+        <p>Esse é um espaço para adicionar conteúdo sobre a empresa.</p>
+        <p>Role a página para baixo para ver mais.</p>
+    </div>
+
+    <div id="album">
+        <div class="galeria">
+            <button onclick="anterior()">&#10094;</button>
+            <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1">
+            <button onclick="proximoManual()">&#10095;</button>
+        </div>
+    </div>
+
+    <script>
+        const imagens = [
+            "{{ url_for('static', filename='img/trabalho1.jpg') }}",
+            "{{ url_for('static', filename='img/trabalho2.jpg') }}",
+            "{{ url_for('static', filename='img/trabalho3.jpg') }}",
+            "{{ url_for('static', filename='img/trabalho4.jpg') }}"
+        ];
+
+        let indice = 0;
+        let intervalo;
+
+        function atualizarImagem() {
+            const img = document.getElementById('foto');
+            img.src = imagens[indice];
+        }
+
+        function proximoManual() {
+            indice = (indice + 1) % imagens.length;
+            atualizarImagem();
+            pararRotacao();
+        }
+
+        function anterior() {
+            indice = (indice - 1 + imagens.length) % imagens.length;
+            atualizarImagem();
+            pararRotacao();
+        }
+
+        function proximoAutomatico() {
+            indice = (indice + 1) % imagens.length;
+            atualizarImagem();
+        }
+
+        function iniciarRotacao() {
+            intervalo = setInterval(proximoAutomatico, 2000);
+        }
+
+        function pararRotacao() {
+            clearInterval(intervalo);
+        }
+
+        function rolarPara(pixels) {
+            window.scrollTo({
+                top: pixels,
+                behavior: 'smooth'
+            });
+        }
+
+        window.onload = function () {
+            atualizarImagem();
+            iniciarRotacao();
+        };
+    </script>
+</body>
+</html>

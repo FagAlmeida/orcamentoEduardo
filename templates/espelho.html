@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Espelhos - Sam Esquadrias</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #700202;
+      color: white;
+      padding: 30px 20px;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header img {
+      max-width: 80px;
+      height: auto;
+      margin-bottom: 10px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    header h1 {
+      font-size: 26px;
+      margin: 0;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .container-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .galeria {
+      flex: 2;
+      flex-wrap: wrap;
+      display: flex;
+      gap: 20px;
+      justify-content: flex-start;
+    }
+
+    .imagem-container {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 270px;
+      transition: transform 0.3s ease;
+    }
+
+    .imagem-container:hover {
+      transform: scale(1.02);
+    }
+
+    .titulo-imagem {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #700202;
+      font-size: 16px;
+    }
+
+    .imagem-opcao {
+      border: 2px solid transparent;
+      cursor: pointer;
+      border-radius: 10px;
+      width: 100%;
+      height: auto;
+      transition: border 0.3s ease;
+    }
+
+    .imagem-opcao.selecionada {
+      border-color: #700202;
+    }
+
+    .lado-direito {
+      flex: 2;
+    }
+
+    .campo-largura {
+      margin-top: 25px;
+      font-size: 20px;
+      display: none;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 20px;
+      width: 220px;
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="{{ url_for('static', filename='img/image.jpg') }}" alt="Logo da Sam Esquadrias">
+    <h1>Escolha seu espelho ideal</h1>
+  </header>
+
+  <main>
+    <p>Veja os modelos de espelho disponíveis e selecione o que melhor se adapta ao seu espaço.</p>
+
+    <div class="container-flex">
+      <div class="galeria">
+        <div class="imagem-container">
+          <div class="titulo-imagem">RETANGULAR</div>
+          <img src="{{ url_for('static', filename='img/espelho1.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+        </div>
+
+        <div class="imagem-container">
+          <div class="titulo-imagem">REDONDO</div>
+          <img src="{{ url_for('static', filename='img/espelho2.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+        </div>
+
+        <div class="imagem-container">
+          <div class="titulo-imagem">ORGÂNICO</div>
+          <img src="{{ url_for('static', filename='img/espelho3.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+        </div>
+      </div>
+
+      <div class="lado-direito">
+        <div class="campo-largura" id="campoLargura">
+          <label for="dimensaoEspelho">Informe as dimensões do espelho:</label>
+          <input type="text" id="dimensaoEspelho" placeholder="Ex: 90x180" oninput="verificarLargura()" />
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sam Esquadrias. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    let modeloSelecionado = "";
+
+    function selecionarImagem(img) {
+      const imagens = document.querySelectorAll('.imagem-opcao');
+      imagens.forEach(imagem => imagem.classList.remove('selecionada'));
+      img.classList.add('selecionada');
+
+      modeloSelecionado = img.parentElement.querySelector('.titulo-imagem').textContent.trim();
+
+      document.getElementById('campoLargura').style.display = 'block';
+      document.getElementById('dimensaoEspelho').value = "";
+    }
+
+    function verificarLargura() {
+      const valor = document.getElementById('dimensaoEspelho').value.trim();
+      const formato = /^\d+\s*[xX]\s*\d+$/;
+
+      if (formato.test(valor)) {
+        console.log("Dimensões válidas.");
+      }
+    }
+  </script>
+
+</body>
+</html>

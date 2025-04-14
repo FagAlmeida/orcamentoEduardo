@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumo do Orçamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #700202;
+            color: white;
+            padding: 30px 20px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        header img {
+            max-width: 80px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        .resumo {
+            background-color: white;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .resumo p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='img/image.jpg') }}" alt="Logo da Sam Esquadrias">
+    <h1>Resumo do Seu Orçamento</h1>
+</header>
+
+<div class="resumo">
+    <p><strong>Nome:</strong> {{ dados.nome }}</p>
+    <p><strong>Endereço:</strong> {{ dados.endereco }}</p>
+    <p><strong>E-mail:</strong> {{ dados.email }}</p>
+    <p><strong>WhatsApp:</strong> {{ dados.whatsapp }}</p>
+    <p><strong>Tipo de Produto:</strong> {{ dados.tipo }}</p>
+
+    {% if dados.tipo == 'porta' %}
+        <p><strong>Modelo da Porta:</strong> {{ dados.modelo }}</p>
+        <p><strong>Dimensão:</strong> {{ dados.dimensao }}</p>
+        <p><strong>Tipo de Vidro:</strong> {{ dados.vidro }}</p>
+    {% endif %}
+</div>
+
+<footer>
+    <p>&copy; 2025 Sam Esquadrias.</p>
+</footer>
+
+</body>
+</html>

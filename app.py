@@ -19,25 +19,42 @@ def infop():
         endereco = request.form.get("address")
         email = request.form.get("email")
         whatsapp = request.form.get("whatsapp")
+        tipo = request.form.get("tipo")  # Captura o valor do select
 
-        if nome and endereco and email and whatsapp:  # Verifica se todos os campos foram preenchidos
-            return redirect(url_for('dimensoes'))  # Redireciona para a página "dimensoes.html"
+        if nome and endereco and email and whatsapp and tipo:
+            # Aqui você pode salvar os dados no MongoDB se quiser
+            # mongo.db.usuarios.insert_one({ ... })
+
+            if tipo == "box":
+                return redirect(url_for('box'))
+            elif tipo == "espelho":
+                return redirect(url_for('espelho'))
+            elif tipo == "porta":
+                return redirect(url_for('porta'))
+            else:
+                erro = "Tipo inválido selecionado."
+                return render_template('infop.html', erro=erro)
         else:
             erro = "Preencha todos os campos corretamente!"
-            return render_template('infop.html', erro=erro)  # Reexibe o formulário com erro
+            return render_template('infop.html', erro=erro)
 
-    return render_template('infop.html')  # Exibe o formulário caso seja uma requisição GET
-
-
+    return render_template('infop.html')
 
 @app.route('/trabalhos')
 def trabalhos():
     return render_template('trabalhos.html')
 
-@app.route('/dimensoes')
-def dimensoes():
-    return render_template('dimensoes.html')
+@app.route('/box')
+def box():
+    return render_template('box.html')
+
+@app.route('/espelho')
+def espelho():
+    return render_template('espelho.html')
+
+@app.route('/porta')
+def porta():
+    return render_template('porta.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
-

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portas - Sam Esquadrias</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #700202;
+      color: white;
+      padding: 30px 20px;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header img {
+      max-width: 80px;
+      margin-bottom: 10px;
+    }
+
+    header h1 {
+      font-size: 26px;
+      margin: 0;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .container-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-top: 30px;
+      justify-content: center;
+    }
+
+    .galeria {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .imagem-container {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 270px;
+    }
+
+    .titulo-imagem {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #700202;
+      font-size: 16px;
+    }
+
+    .imagem-opcao {
+      border: 2px solid transparent;
+      cursor: pointer;
+      border-radius: 10px;
+      width: 100%;
+      transition: border 0.3s ease;
+    }
+
+    .imagem-opcao.selecionada {
+      border-color: #700202;
+    }
+
+    .lado-direito {
+      flex: 2;
+    }
+
+    .campo-largura,
+    .opcoes-vidro {
+      margin-top: 25px;
+      font-size: 20px;
+      display: none;
+    }
+
+    .botao-tipo {
+      padding: 15px 25px;
+      background-color: #700202;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin: 5px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .botao-tipo:hover {
+      background-color: #3a3636;
+    }
+
+    .botao-confirmar {
+      margin-top: 20px;
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .botao-confirmar:hover {
+      background-color: #0056b3;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 20px;
+      width: 220px;
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="{{ url_for('static', filename='img/image.jpg') }}" alt="Logo da Sam Esquadrias">
+    <h1>Escolha sua porta ideal</h1>
+  </header>
+
+  <main>
+    <p>Veja os modelos disponíveis e selecione a porta que melhor combina com seu projeto.</p>
+
+    <div class="container-flex">
+      <div class="galeria">
+        <div class="imagem-container">
+          <div class="titulo-imagem">PORTA DE ABRIR</div>
+          <img src="{{ url_for('static', filename='img/porta1.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+        </div>
+
+        <div class="imagem-container">
+          <div class="titulo-imagem">PORTA DE CORRER</div>
+          <img src="{{ url_for('static', filename='img/porta2.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+        </div>
+
+        <div class="imagem-container">
+          <div class="titulo-imagem">PORTA BALCÃO</div>
+          <img src="{{ url_for('static', filename='img/porta3.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+        </div>
+
+        <div class="imagem-container">
+          <div class="titulo-imagem">PORTA CAMARÃO</div>
+          <img src="{{ url_for('static', filename='img/porta4.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+        </div>
+      </div>
+
+      <div class="lado-direito">
+        <div class="campo-largura" id="campoLargura">
+          <label for="larguraPorta">Informe a altura x largura:</label>
+          <input type="text" id="larguraPorta" placeholder="Ex: 210x80" oninput="verificarLargura()" />
+        </div>
+
+        <button id="botaoConfirmar" class="botao-confirmar" onclick="confirmarLargura()">Confirmar</button>
+
+        <div class="opcoes-vidro" id="opcoesVidro">
+          <h3>Escolha o tipo de vidro:</h3>
+          <button class="botao-tipo" onclick="selecionarVidro('Incolor')">Incolor</button>
+          <button class="botao-tipo" onclick="selecionarVidro('Fumê')">Fumê</button>
+          <button class="botao-tipo" onclick="selecionarVidro('Pontilhado')">Pontilhado</button>
+          <button class="botao-tipo" onclick="selecionarVidro('Verde')">Verde</button>
+          <button class="botao-tipo" onclick="selecionarVidro('Canelado')">Canelado</button>
+          <button class="botao-tipo" onclick="selecionarVidro('Vidros comuns')">Vidros comuns (3 a 6 mm)</button>
+          <button class="botao-tipo" onclick="selecionarVidro('Serigrafados')">Serigrafados (6 a 12 mm)</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sam Esquadrias. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    let modeloSelecionado = "";
+
+    function selecionarImagem(img) {
+      document.querySelectorAll('.imagem-opcao').forEach(i => i.classList.remove('selecionada'));
+      img.classList.add('selecionada');
+
+      modeloSelecionado = img.parentElement.querySelector('.titulo-imagem').textContent.trim();
+
+      document.getElementById('campoLargura').style.display = 'block';
+      document.getElementById('botaoConfirmar').style.display = 'none';
+      document.getElementById('opcoesVidro').style.display = 'none';
+    }
+
+    function verificarLargura() {
+      const valor = document.getElementById('larguraPorta').value.trim();
+      const formatoUnico = /^\d+$/;
+      const formatoDuplo = /^\d+\s*[xX]\s*\d+$/;
+
+      const valido = formatoUnico.test(valor) || formatoDuplo.test(valor);
+
+      document.getElementById('botaoConfirmar').style.display = valido ? 'inline-block' : 'none';
+    }
+
+    function confirmarLargura() {
+      document.getElementById('campoLargura').style.display = 'none';
+      document.getElementById('botaoConfirmar').style.display = 'none';
+      document.getElementById('opcoesVidro').style.display = 'block';
+    }
+
+    function selecionarVidro(vidro) {
+      alert("Vidro selecionado: " + vidro);
+    }
+  </script>
+
+</body>
+</html>

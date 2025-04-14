@@ -3,77 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Minha Aplicação Flask</title>
+    <title>Home - Sam Esquadrias</title>
     <style>
-        /* Estilização geral */
         body {
             font-family: Arial, sans-serif;
-            background-color: #635757;
-            color: #f3e1e1;
+            background-color: #f2f2f2;
+            color: #333;
             text-align: center;
-            padding: 20px;
+            padding: 0;
         }
 
         header {
-            background-color: #746a6a;
+            background-color: #700202;
             color: white;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 30px 20px;
+            border-radius: 50px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        header img {
+            max-width: 80px;
+            height: auto;
+            margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
         }
 
         main p {
             font-size: 18px;
-            color: #e6d4d4;
+            color: #555;
+            margin-top: 15px;
         }
 
         form {
-            background-color: rgb(85, 81, 81);
-            padding: 20px;
-            margin: auto;
-            width: 50%;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(235, 232, 232, 0.1);
+            background-color: #e4e4e4;
+            padding: 15px;
+            margin: 13px auto;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         label {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             display: block;
-            margin-top: 10px;
+            margin-top: 15px;
+            color: #333;
+            text-align: left;
         }
 
-        input {
+        input, select {
             width: 90%;
-            padding: 10px;
-            margin-top: 5px;
+            padding: 9px;
+            margin-top: 4px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 15px;
         }
 
         button {
-            background-color: #28a745;
+            background-color: #700202;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 16px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #510101;
         }
 
         footer {
-            margin-top: 20px;
+            margin-top: 40px;
             font-size: 14px;
-            color: #666;
+            color: #888;
+        }
+
+        .erro {
+            color: red;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
     <header>
+        <img src="{{ url_for('static', filename='img/image.jpg') }}" alt="Logo da Sam Esquadrias">
         <h1>Preencha abaixo com suas informações pessoais</h1>
     </header>
 
@@ -82,21 +109,29 @@
     </main>
 
     {% if erro %}
-        <p style="color: red;">{{ erro }}</p>
+        <p class="erro">{{ erro }}</p>
     {% endif %}
 
     <form action="{{ url_for('infop') }}" method="POST">
         <label for="username">Nome:</label>
-        <input type="text" id="username" name="username" required placeholder="Digite seu nome"><br><br>
+        <input type="text" id="username" name="username" required placeholder="Digite seu nome">
 
         <label for="address">Endereço:</label>
-        <input type="text" id="address" name="address" required placeholder="Digite seu endereço"><br><br>
+        <input type="text" id="address" name="address" required placeholder="Digite seu endereço">
 
         <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" required placeholder="Digite seu e-mail"><br><br>
+        <input type="email" id="email" name="email" required placeholder="Digite seu e-mail">
 
         <label for="whatsapp">WhatsApp:</label>
-        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="(99) 99999-9999"><br><br>
+        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="(99) 99999-9999">
+
+        <label for="tipo">Escolha o tipo:</label>
+        <select id="tipo" name="tipo" required>
+            <option value="" disabled selected>Selecione uma opção</option>
+            <option value="box">Box</option>
+            <option value="espelho">Espelho</option>
+            <option value="porta">Porta</option>
+        </select>
 
         <button type="submit">Confirmar</button>
     </form>

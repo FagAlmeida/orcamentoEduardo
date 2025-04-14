@@ -15,7 +15,7 @@
 
         body {
             background: url("{{ url_for('static', filename='img/fundo.jpg') }}") no-repeat center top;
-            background-size: 100% 45%;
+            background-size: 100% 25%;
             background-attachment: local;
             background-position: center 160px;
             min-height: 100vh;
@@ -66,37 +66,48 @@
             padding: 30px;
             text-align: center;
             color: rgb(37, 34, 34);
-            min-height: 95vh;
+            min-height: 100vh;
         }
 
         #album {
             background: url("{{ url_for('static', filename='img/fundo2.jpg') }}") no-repeat center center;
             background-size: contain;
             background-attachment: local;
-            width: 107.8%;
+            width: 101%;
             min-height: 110vh;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             flex-direction: column;
             padding: 100px 0;
-            margin-left: -150px;
-            margin-top: 100px;
-            background-position: center 160px;
+            margin-left: -20px;
+            margin-top: -180px;
+            background-position: center 50px;
         }
 
         .galeria {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 40px;
             flex-wrap: nowrap;
             transition: all 0.3s ease-in-out;
             position: relative;
-            margin-left: -500px;
-            height: 1100px;
+            margin-left: -600px;
+            height: 900px;
+        }
+           
+        .galeria2 {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: nowrap;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            margin-left: -600px;
+            height: 900px;
         }
 
-        .galeria img {
+        .galeria img, .galeria2 img {
             width: 700px;
             height: 700px;
             border-radius: 10px;
@@ -104,7 +115,7 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .galeria button {
+        .galeria button, .galeria2 button {
             background-color: #b10404;
             color: white;
             border: none;
@@ -115,8 +126,25 @@
             transition: background-color 0.3s;
         }
 
-        .galeria button:hover {
+        .galeria button:hover, .galeria2 button:hover {
             background-color: #700202;
+        }
+
+        /* NOVA SEÇÃO COM FUNDO 4 */
+        #servicos {
+            background: url("{{ url_for('static', filename='img/fundo4.jpg') }}") no-repeat center center;
+            background-size: contain;
+            background-attachment: local;
+            width: 101%;
+            min-height: 110vh;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            padding: 100px 0;
+            margin-left: -20px;
+            margin-top: -130px;
+            background-position: center 50px;
         }
     </style>
 </head>
@@ -131,13 +159,12 @@
     <nav>
         <ul>
             <li><a href="{{ url_for('infop') }}">Realize seu orçamento</a></li>
-            <li><a href="javascript:void(0)" onclick="rolarPara(1400)">Conhecer meus trabalhos</a></li>
+            <li><a href="javascript:void(0)" onclick="rolarPara(1180)">Conhecer meus trabalhos</a></li>
         </ul>
     </nav>
 
     <div class="conteudo">
-        <p>Esse é um espaço para adicionar conteúdo sobre a empresa.</p>
-        <p>Role a página para baixo para ver mais.</p>
+
     </div>
 
     <div id="album">
@@ -145,6 +172,20 @@
             <button onclick="anterior()">&#10094;</button>
             <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1">
             <button onclick="proximoManual()">&#10095;</button>
+        </div>
+    </div>
+
+    <!-- NOVA SEÇÃO COM FUNDO 4 -->
+    <div id="servicos">
+        <div class="conteudo-servicos">
+            
+        </div>
+
+        <!-- NOVO ÁLBUM DENTRO DE SERVIÇOS -->
+        <div class="galeria2">
+            <button onclick="anterior2()">&#10094;</button>
+            <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1">
+            <button onclick="proximoManual2()">&#10095;</button>
         </div>
     </div>
 
@@ -199,7 +240,67 @@
         window.onload = function () {
             atualizarImagem();
             iniciarRotacao();
+            atualizarImagem2();
         };
-    </script>
+
+        // NOVO ÁLBUM DE SERVIÇOS
+        const imagens2 = [
+        "{{ url_for('static', filename='img/servico1.jpg') }}",
+        "{{ url_for('static', filename='img/servico2.jpg') }}",
+        "{{ url_for('static', filename='img/servico3.jpg') }}",
+        "{{ url_for('static', filename='img/servico4.jpg') }}"
+    ];
+
+    let indice2 = 0;
+    let intervalo2; // controla o loop automático
+
+    function atualizarImagem2() {
+        const img2 = document.getElementById('foto2');
+        img2.src = imagens2[indice2];
+    }
+
+    function proximoManual2() {
+        indice2 = (indice2 + 1) % imagens2.length;
+        atualizarImagem2();
+        pararRotacao2();
+    }
+
+    function anterior2() {
+        indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
+        atualizarImagem2();
+        pararRotacao2();
+    }
+
+    function proximoAutomatico2() {
+        indice2 = (indice2 + 1) % imagens2.length;
+        atualizarImagem2();
+    }
+
+    function iniciarRotacao2() {
+        intervalo2 = setInterval(proximoAutomatico2, 2000);
+    }
+
+    function pararRotacao2() {
+        clearInterval(intervalo2);
+    }
+
+    // Scroll suave
+    function rolarPara(pixels) {
+        window.scrollTo({
+            top: pixels,
+            behavior: 'smooth'
+        });
+    }
+
+    // Quando a página carregar
+    window.onload = function () {
+        atualizarImagem();
+        iniciarRotacao();
+        atualizarImagem2();
+        iniciarRotacao2();
+    };
+</script>
+</body>
+</html>
 </body>
 </html>

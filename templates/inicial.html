@@ -7,115 +7,92 @@
 
     <style>
         html, body {
-            height: auto;
             margin: 0;
             padding: 0;
-            background-color: #990d0d;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
         }
 
-        body {
-            background: url("{{ url_for('static', filename='img/fundo.jpg') }}") no-repeat center top;
-            background-size: 100% 25%;
-            background-attachment: local;
-            background-position: center 160px;
-            min-height: 100vh;
-        }
+    section {
+        width: 100%;
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        margin-bottom: 1cm; /* <-- AQUI adiciona 1cm de espaçamento entre cada section */
+    }
 
         header {
-            background-color: rgba(182, 8, 8, 0.9);
-            padding: 20px;
+            position: absolute;
+            top: 20px;
+            width: 100%;
             text-align: center;
-            box-shadow: 0px 2px 5px rgba(236, 233, 233, 0.1);
-            margin-top: -10px;
         }
 
-        h1 {
-            font-size: 24px;
-            color: #f3e3e3;
-            margin: 0;
+        header h1 { /* <-- AQUI controla o título principal */
+            margin: 10px 0;
+            font-size: 2em;
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
 
         nav {
-            background-color: rgba(179, 13, 13, 0.9);
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0px 2px 5px rgba(134, 3, 3, 0.1);
-            margin-top: -10px;
+            margin-top: 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
         nav ul li {
-            display: inline;
+            display: inline-block;
+            margin: 0 10px;
         }
 
         nav ul li a {
             text-decoration: none;
-            color: #b10404;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 10px 15px;
-            transition: color 0.3s;
             background: rgba(255, 255, 255, 0.8);
+            color: #b10404;
+            padding: 10px 15px;
             border-radius: 5px;
+            font-weight: bold;
         }
 
         nav ul li a:hover {
+            background: #fff;
             color: #155396;
-        }
-
-        .conteudo {
-            padding: 30px;
-            text-align: center;
-            color: rgb(37, 34, 34);
-            min-height: 100vh;
-        }
-
-        #album {
-            background: url("{{ url_for('static', filename='img/fundo2.jpg') }}") no-repeat center center;
-            background-size: contain;
-            background-attachment: local;
-            width: 101%;
-            min-height: 110vh;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            flex-direction: column;
-            padding: 100px 0;
-            margin-left: -20px;
-            margin-top: -180px;
-            background-position: center 50px;
         }
 
         .galeria {
             display: flex;
             align-items: center;
-            gap: 40px;
-            flex-wrap: nowrap;
-            transition: all 0.3s ease-in-out;
-            position: relative;
-            margin-left: -600px;
-            height: 900px;
-        }
-           
-        .galeria2 {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            flex-wrap: nowrap;
-            transition: all 0.3s ease-in-out;
-            position: relative;
-            margin-left: -600px;
-            height: 900px;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* <-- Em vez de center */
+            width: 90%;
+            max-width: 1000px;
+            margin-left: -25%; /* <-- Deixa uma margem da esquerda */
         }
 
-        .galeria img, .galeria2 img {
-            width: 700px;
-            height: 700px;
+        .galeria img {
+            width: 100%; /* agora vai ocupar 100% da área disponível */
+            max-width: 400px; /* mas nunca ultrapassar 350px */
+            height: 500px; /* altura fixa */
+            object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease-in-out;
         }
-
-        .galeria button, .galeria2 button {
+        
+        .galeria button {
             background-color: #b10404;
             color: white;
             border: none;
@@ -126,181 +103,92 @@
             transition: background-color 0.3s;
         }
 
-        .galeria button:hover, .galeria2 button:hover {
+        .galeria button:hover {
             background-color: #700202;
-        }
-
-        /* NOVA SEÇÃO COM FUNDO 4 */
-        #servicos {
-            background: url("{{ url_for('static', filename='img/fundo4.jpg') }}") no-repeat center center;
-            background-size: contain;
-            background-attachment: local;
-            width: 101%;
-            min-height: 110vh;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            flex-direction: column;
-            padding: 100px 0;
-            margin-left: -20px;
-            margin-top: -130px;
-            background-position: center 50px;
         }
     </style>
 </head>
-
 <body>
 
+<!-- Primeira tela - imagem de fundo com texto e botão -->
+<section style="background-image: url('{{ url_for('static', filename='img/fundo.jpg') }}');">
     <header>
         <h1>Bem-vindo à Sam Esquadrias!</h1>
         <h1>Serviços e manutenção em alumínio, janelas e box.</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('infop') }}">Realize seu orçamento</a></li>
+                <li><a href="#album1">Conhecer meus trabalhos</a></li>
+            </ul>
+        </nav>
     </header>
+</section>
 
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('infop') }}">Realize seu orçamento</a></li>
-            <li><a href="javascript:void(0)" onclick="rolarPara(1180)">Conhecer meus trabalhos</a></li>
-        </ul>
-    </nav>
-
-    <div class="conteudo">
-
+<!-- Segunda tela - outra imagem de fundo com galeria 1 -->
+<section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
+    <div class="galeria">
+        <button onclick="anterior()">&#10094;</button>
+        <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1">
+        <button onclick="proximo()">&#10095;</button>
     </div>
+</section>
 
-    <div id="album">
-        <div class="galeria">
-            <button onclick="anterior()">&#10094;</button>
-            <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1">
-            <button onclick="proximoManual()">&#10095;</button>
-        </div>
+<!-- Terceira tela - outra imagem de fundo com galeria 2 -->
+<section style="background-image: url('{{ url_for('static', filename='img/fundo4.jpg') }}');">
+    <div class="galeria">
+        <button onclick="anterior2()">&#10094;</button>
+        <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1">
+        <button onclick="proximo2()">&#10095;</button>
     </div>
+</section>
 
-    <!-- NOVA SEÇÃO COM FUNDO 4 -->
-    <div id="servicos">
-        <div class="conteudo-servicos">
-            
-        </div>
+<script>
+    // Galeria 1
+    const imagens = [
+        "{{ url_for('static', filename='img/trabalho1.jpg') }}",
+        "{{ url_for('static', filename='img/trabalho2.jpg') }}",
+        "{{ url_for('static', filename='img/trabalho3.jpg') }}",
+        "{{ url_for('static', filename='img/trabalho4.jpg') }}"
+    ];
+    let indice = 0;
 
-        <!-- NOVO ÁLBUM DENTRO DE SERVIÇOS -->
-        <div class="galeria2">
-            <button onclick="anterior2()">&#10094;</button>
-            <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1">
-            <button onclick="proximoManual2()">&#10095;</button>
-        </div>
-    </div>
+    function atualizarImagem() {
+        document.getElementById('foto').src = imagens[indice];
+    }
 
-    <script>
-        const imagens = [
-            "{{ url_for('static', filename='img/trabalho1.jpg') }}",
-            "{{ url_for('static', filename='img/trabalho2.jpg') }}",
-            "{{ url_for('static', filename='img/trabalho3.jpg') }}",
-            "{{ url_for('static', filename='img/trabalho4.jpg') }}"
-        ];
+    function proximo() {
+        indice = (indice + 1) % imagens.length;
+        atualizarImagem();
+    }
 
-        let indice = 0;
-        let intervalo;
+    function anterior() {
+        indice = (indice - 1 + imagens.length) % imagens.length;
+        atualizarImagem();
+    }
 
-        function atualizarImagem() {
-            const img = document.getElementById('foto');
-            img.src = imagens[indice];
-        }
-
-        function proximoManual() {
-            indice = (indice + 1) % imagens.length;
-            atualizarImagem();
-            pararRotacao();
-        }
-
-        function anterior() {
-            indice = (indice - 1 + imagens.length) % imagens.length;
-            atualizarImagem();
-            pararRotacao();
-        }
-
-        function proximoAutomatico() {
-            indice = (indice + 1) % imagens.length;
-            atualizarImagem();
-        }
-
-        function iniciarRotacao() {
-            intervalo = setInterval(proximoAutomatico, 2000);
-        }
-
-        function pararRotacao() {
-            clearInterval(intervalo);
-        }
-
-        function rolarPara(pixels) {
-            window.scrollTo({
-                top: pixels,
-                behavior: 'smooth'
-            });
-        }
-
-        window.onload = function () {
-            atualizarImagem();
-            iniciarRotacao();
-            atualizarImagem2();
-        };
-
-        // NOVO ÁLBUM DE SERVIÇOS
-        const imagens2 = [
+    // Galeria 2
+    const imagens2 = [
         "{{ url_for('static', filename='img/servico1.jpg') }}",
         "{{ url_for('static', filename='img/servico2.jpg') }}",
         "{{ url_for('static', filename='img/servico3.jpg') }}",
         "{{ url_for('static', filename='img/servico4.jpg') }}"
     ];
-
     let indice2 = 0;
-    let intervalo2; // controla o loop automático
 
     function atualizarImagem2() {
-        const img2 = document.getElementById('foto2');
-        img2.src = imagens2[indice2];
+        document.getElementById('foto2').src = imagens2[indice2];
     }
 
-    function proximoManual2() {
+    function proximo2() {
         indice2 = (indice2 + 1) % imagens2.length;
         atualizarImagem2();
-        pararRotacao2();
     }
 
     function anterior2() {
         indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
         atualizarImagem2();
-        pararRotacao2();
     }
-
-    function proximoAutomatico2() {
-        indice2 = (indice2 + 1) % imagens2.length;
-        atualizarImagem2();
-    }
-
-    function iniciarRotacao2() {
-        intervalo2 = setInterval(proximoAutomatico2, 2000);
-    }
-
-    function pararRotacao2() {
-        clearInterval(intervalo2);
-    }
-
-    // Scroll suave
-    function rolarPara(pixels) {
-        window.scrollTo({
-            top: pixels,
-            behavior: 'smooth'
-        });
-    }
-
-    // Quando a página carregar
-    window.onload = function () {
-        atualizarImagem();
-        iniciarRotacao();
-        atualizarImagem2();
-        iniciarRotacao2();
-    };
 </script>
-</body>
-</html>
+
 </body>
 </html>

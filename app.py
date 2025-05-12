@@ -11,6 +11,10 @@ mongo = PyMongo(app)
 
 usuarios_collection = mongo.db.usuarios
 
+@app.route('/', methods=['GET'])
+def inicial():
+    return render_template('inicial.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

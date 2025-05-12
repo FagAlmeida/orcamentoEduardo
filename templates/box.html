@@ -135,6 +135,13 @@
       font-size: 14px;
       color: #888;
     }
+
+    .mensagem { 
+      margin-top: 20px;
+      font-size: 18px;
+      color: #700202;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -146,6 +153,11 @@
 
   <main>
     <p>Veja os modelos disponíveis e selecione o que melhor se adapta ao seu ambiente.</p>
+
+    <!-- Mensagem dinâmica do app.py -->
+    <div class="mensagem">
+      {{ mensagem }}
+    </div>
 
     <div class="container-flex">
       <div class="galeria">
@@ -199,6 +211,9 @@
 
   <script>
     let modeloSelecionado = "";
+    let tipoSelecionado = "";
+    let larguraBox = "";
+    let vidroSelecionado = "";
 
     function selecionarImagem(img) {
       document.querySelectorAll('.imagem-opcao').forEach(i => i.classList.remove('selecionada'));
@@ -213,39 +228,57 @@
     }
 
     function selecionarTipo(tipo) {
+      tipoSelecionado = tipo;
       document.getElementById('campoLargura').style.display = 'block';
       document.getElementById('botaoConfirmar').style.display = 'none';
       document.getElementById('opcoesVidro').style.display = 'none';
     }
 
     function verificarLargura() {
-      const valor = document.getElementById('larguraBox').value.trim();
+      larguraBox = document.getElementById('larguraBox').value.trim();
       const formatoUnico = /^\d+$/;
       const formatoDuplo = /^\d+\s*[xX]\s*\d+$/;
 
       let valido = false;
 
       if (modeloSelecionado === "CANTO") {
-        valido = formatoDuplo.test(valor);
+        valido = formatoDuplo.test(larguraBox);
       } else {
-        valido = formatoUnico.test(valor);
+        valido = formatoUnico.test(larguraBox);
       }
 
       document.getElementById('botaoConfirmar').style.display = valido ? 'inline-block' : 'none';
     }
 
     function confirmarLargura() {
-      // Oculta tipo + campo + botão
-      document.getElementById('opcoesTipo').style.display = 'none';
-      document.getElementById('campoLargura').style.display = 'none';
-      document.getElementById('botaoConfirmar').style.display = 'none';
-
-      // Mostra os vidros
       document.getElementById('opcoesVidro').style.display = 'block';
     }
 
     function selecionarVidro(vidro) {
-      alert("Vidro selecionado: " + vidro);
+      vidroSelecionado = vidro;
+
+      // Gerando a mensagem para o WhatsApp
+      const numeroWhatsapp = "+553598404619"; // Substitua pelo número do WhatsApp
+      const mensagem = encodeURIComponent(
+        `*Confirmação do Pedido - Box*\n` +
+        `📛 *Nome:* {{ usuario.nome }}\n` +
+        `📱 *Telefone:* {{ usuario.telefone }}\n` +
+        `📧 *Email:* {{ usuario.email }}\n` +
+        `🏠 *Endereço:* {{ usuario.endereco or "Não informado" }}\n` +
+        `🏙️ *Cidade:* {{ usuario.cidade or "Não informado" }}\n` +
+        `📮 *CEP:* {{ usuario.cep or "Não informado" }}\n` +
+        `🚪 *Tipo de Produto:* {{ usuario.tipo or "Não informado" }}\n\n` +
+        `📦 *Box:*\n` +
+        `- *Modelo:* ${modeloSelecionado}\n` +
+        `- *Tipo:* ${tipoSelecionado}\n` +
+        `- *Largura:* ${larguraBox}\n` +
+        `- *Vidro:* ${vidroSelecionado}\n\n` +
+        `Confirma seu pedido? Entre em contato para finalizar!`
+      );
+
+      const linkWhatsapp = `https://wa.me/${numeroWhatsapp}?text=${mensagem}`;
+
+      window.open(linkWhatsapp, "_blank");
     }
   </script>
 

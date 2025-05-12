@@ -1,18 +1,15 @@
 from flask import Flask, redirect, render_template, request, url_for, session
 from flask_pymongo import PyMongo
-import re
+import urllib.parse
 
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_aqui'
 
 # Configuração do MongoDB
 app.config["MONGO_URI"] = "mongodb+srv://fagalmeida:1234@cluster0.xm9sz.mongodb.net/meu_banco?retryWrites=true&w=majority"
-
 mongo = PyMongo(app)
 
-# Definir a coleção de usuários
 usuarios_collection = mongo.db.usuarios
-enderecos_collection = mongo.db.enderecos  # Coleção de endereços
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -27,6 +24,7 @@ def login():
         usuario = usuarios_collection.find_one({'telefone': telefone})
 
         if usuario:
+            session['telefone'] = telefone
             return redirect(url_for('infop'))
         else:
             erro = "Usuário não encontrado ou dados incorretos!"
@@ -38,71 +36,50 @@ def login():
 def register():
     if request.method == 'POST':
         nome = request.form.get("nome")
-        if nome:
-            nome = nome.strip()
-        else:
-            erro = "Nome não pode ser vazio!"
-            return render_template('register.html', erro=erro)
-
         telefone = request.form.get("telefone")
-        if telefone:
-            telefone = telefone.strip()
-        else:
-            erro = "Telefone não pode ser vazio!"
-            return render_template('register.html', erro=erro)
-
         email = request.form.get("email")
-        if email:
-            email = email.strip().lower()
-        else:
-            erro = "Email não pode ser vazio!"
-            return render_template('register.html', erro=erro)
 
-        username = request.form.get("username") or nome.lower().replace(" ", "_")
-
-        # Validação do email
-        if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
-            erro = "Formato de email inválido!"
-            return render_template('register.html', erro=erro)
-
-        if nome and telefone and email:
-            usuario_existente = usuarios_collection.find_one({"$or": [{"telefone": telefone}, {"username": username}, {"email": email}]})
-            if usuario_existente:
-                erro = "Usuário, telefone ou email já registrado."
-                return render_template('register.html', erro=erro)
-
-            usuarios_collection.insert_one({"nome": nome, "telefone": telefone, "username": username, "email": email})
-            session['telefone'] = telefone
-            return redirect(url_for('login'))
-        else:
+        if not nome or not telefone or not email:
             erro = "Preencha todos os campos!"
             return render_template('register.html', erro=erro)
-    return render_template('register.html')
 
-@app.route('/')
-def inicial():
-    return render_template('inicial.html')
+        usuario_existente = usuarios_collection.find_one({"$or": [{"telefone": telefone}, {"email": email}]})
+        if usuario_existente:
+            erro = "Usuário já registrado!"
+            return render_template('register.html', erro=erro)
+
+        # Cria o perfil do usuário
+        usuarios_collection.insert_one({"nome": nome, "telefone": telefone, "email": email})
+        session['telefone'] = telefone
+        return redirect(url_for('infop'))
+
+    return render_template('register.html')
 
 @app.route('/infop', methods=['GET', 'POST'])
 def infop():
+    if 'telefone' not in session:
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
-        # Coleta as informações do formulário
-        endereco = request.form['endereco']
-        numero = request.form['numero']
-        cidade = request.form['cidade']
-        cep = request.form['cep']
-        tipo = request.form['tipo']  # Captura a opção escolhida
-        
-        # Salva as informações no MongoDB
-        data = {
-            'endereco': endereco,
-            'numero': numero,
-            'cidade': cidade,
-            'cep': cep,
-            'tipo': tipo
-        }
-        enderecos_collection.insert_one(data)  # Insere na coleção de endereços
-        
+        endereco = request.form.get('endereco')
+        numero = request.form.get('numero')
+        cidade = request.form.get('cidade')
+        cep = request.form.get('cep')
+        tipo = request.form.get('tipo')
+        telefone = session['telefone']
+
+        # Atualiza os dados do usuário com as informações do infop
+        usuarios_collection.update_one(
+            {"telefone": telefone},
+            {"$set": {
+                "endereco": endereco,
+                "numero": numero,
+                "cidade": cidade,
+                "cep": cep,
+                "tipo": tipo
+            }}
+        )
+
         # Redireciona para a página escolhida
         if tipo == 'box':
             return redirect(url_for('box'))
@@ -113,21 +90,141 @@ def infop():
         
     return render_template('infop.html')
 
+
+
+@app.route('/box', methods=['GET', 'POST'])
+def box():
+    if 'telefone' not in session:
+        return redirect(url_for('login'))
+
+    telefone = session['telefone']
+    usuario = usuarios_collection.find_one({"telefone": telefone})
+
+    if request.method == 'POST':
+        modelo = request.form.get('modelo')
+        tipo = request.form.get('tipo')
+        largura = request.form.get('largura')
+        vidro = request.form.get('vidro')
+
+        # Atualiza os dados do usuário com as informações do box
+        usuarios_collection.update_one(
+            {"telefone": telefone},
+            {"$set": {
+                "box": {
+                    "modelo": modelo,
+                    "tipo": tipo,
+                    "largura": largura,
+                    "vidro": vidro
+                }
+            }}
+        )
+
+        # Monta a mensagem para o WhatsApp
+        mensagem = f"""
+        *Confirmação do Pedido - Box*
+        📛 *Nome:* {usuario['nome']}
+        📱 *Telefone:* {usuario['telefone']}
+        📧 *Email:* {usuario['email']}
+        🏠 *Endereço:* {usuario.get('endereco', 'Não informado')}, {usuario.get('numero', 'Não informado')}
+        🏙️ *Cidade:* {usuario.get('cidade', 'Não informado')}
+        📮 *CEP:* {usuario.get('cep', 'Não informado')}
+        🚪 *Tipo de Produto:* {usuario.get('tipo', 'Não informado')}
+        
+        📦 *Box:*
+        - *Modelo:* {modelo}
+        - *Tipo:* {tipo}
+        - *Largura:* {largura}
+        - *Vidro:* {vidro}
+        
+        Confirma seu pedido? Entre em contato para finalizar!
+        """
+
+        # Codifica a mensagem para URL
+        mensagem_encoded = urllib.parse.quote(mensagem.strip())
+        meu_numero = "+553598404619"  # Substitua pelo seu número com DDI e DDD
+        whatsapp_url = f"https://wa.me/{meu_numero}?text={mensagem_encoded}"
+        
+        # Redireciona para o WhatsApp
+        return redirect(whatsapp_url)
+    
+    return render_template('box.html', usuario=usuario)
+
+    
+@app.route('/espelho', methods=['GET', 'POST'])
+def espelho():
+    if 'telefone' not in session:
+        return redirect(url_for('login'))
+
+    telefone = session['telefone']
+    usuario = usuarios_collection.find_one({"telefone": telefone})
+
+    if request.method == 'POST':
+        modelo = request.form.get('modelo')
+        tipo = request.form.get('tipo')
+        largura = request.form.get('largura')
+        vidro = request.form.get('vidro')
+
+        # Atualiza os dados do usuário com as informações do espelho
+        usuarios_collection.update_one(
+            {"telefone": telefone},
+            {"$set": {
+                "espelho": {
+                    "modelo": modelo,
+                    "tipo": tipo,
+                    "largura": largura,
+                    "vidro": vidro
+                }
+            }}
+        )
+
+        # Monta a mensagem para o WhatsApp
+        mensagem = f"""
+        *Confirmação do Pedido - Espelho*
+        📛 *Nome:* {usuario['nome']}
+        📱 *Telefone:* {usuario['telefone']}
+        📧 *Email:* {usuario['email']}
+        🏠 *Endereço:* {usuario.get('endereco', 'Não informado')}, {usuario.get('numero', 'Não informado')}
+        🏙️ *Cidade:* {usuario.get('cidade', 'Não informado')}
+        📮 *CEP:* {usuario.get('cep', 'Não informado')}
+        🚪 *Tipo de Produto:* {usuario.get('tipo', 'Não informado')}
+        
+        🪞 *Espelho:*
+        - *Modelo:* {modelo}
+        - *Tipo:* {tipo}
+        - *Largura:* {largura}
+        - *Vidro:* {vidro}
+        
+        Confirma seu pedido? Entre em contato para finalizar!
+        """
+
+        # Codifica a mensagem para URL
+        mensagem_encoded = urllib.parse.quote(mensagem.strip())
+        meu_numero = "+553598404619"  # Substitua pelo seu número com DDI e DDD
+        whatsapp_url = f"https://wa.me/{meu_numero}?text={mensagem_encoded}"
+        
+        # Redireciona para o WhatsApp
+        return redirect(whatsapp_url)
+    
+    return render_template('espelho.html', usuario=usuario)
+
+@app.route('/porta', methods=['GET', 'POST'])
+def porta():
+    if 'telefone' not in session:
+        return redirect(url_for('login'))  # Redireciona para login caso não tenha telefone na sessão
+
+    telefone = session['telefone']
+    usuario = usuarios_collection.find_one({"telefone": telefone})
+
+    return render_template('porta.html', usuario=usuario)
+
 @app.route('/trabalhos')
 def trabalhos():
     return render_template('trabalhos.html')
 
-@app.route('/box')
-def box():
-    return render_template('box.html')
-
-@app.route('/espelho')
-def espelho():
-    return render_template('espelho.html')
-
-@app.route('/porta')
-def porta():
-    return render_template('porta.html')
+@app.route('/logout')
+def logout():
+    session.pop('telefone', None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

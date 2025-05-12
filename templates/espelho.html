@@ -120,6 +120,22 @@
       font-size: 14px;
       color: #888;
     }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #700202;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none; /* Inicialmente oculto */
+    }
+
+    button:hover {
+      background-color: #900;
+    }
   </style>
 </head>
 <body>
@@ -155,6 +171,7 @@
           <label for="dimensaoEspelho">Informe as dimensões do espelho:</label>
           <input type="text" id="dimensaoEspelho" placeholder="Ex: 90x180" oninput="verificarLargura()" />
         </div>
+        <button id="btnConfirmar" onclick="enviarWhatsapp()">Confirmar Pedido</button>
       </div>
     </div>
   </main>
@@ -165,6 +182,9 @@
 
   <script>
     let modeloSelecionado = "";
+    let tipoSelecionado = "Espelho"; // Tipo fixo para este caso
+    let larguraBox = ""; // Inicializado vazio
+    let vidroSelecionado = "Comum"; // Exemplo de valor fixo para vidro
 
     function selecionarImagem(img) {
       const imagens = document.querySelectorAll('.imagem-opcao');
@@ -175,6 +195,7 @@
 
       document.getElementById('campoLargura').style.display = 'block';
       document.getElementById('dimensaoEspelho').value = "";
+      document.getElementById('btnConfirmar').style.display = 'none'; // Oculta o botão inicialmente
     }
 
     function verificarLargura() {
@@ -182,8 +203,34 @@
       const formato = /^\d+\s*[xX]\s*\d+$/;
 
       if (formato.test(valor)) {
-        console.log("Dimensões válidas.");
+        larguraBox = valor;
+        document.getElementById('btnConfirmar').style.display = 'block'; // Exibe o botão quando a largura for válida
+      } else {
+        larguraBox = "";
+        document.getElementById('btnConfirmar').style.display = 'none'; // Esconde o botão se a largura for inválida
       }
+    }
+
+    function enviarWhatsapp() {
+      const numeroWhatsapp = "+553598404619"; // Substitua pelo número do WhatsApp
+      const mensagem = encodeURIComponent(
+        `*Confirmação do Pedido - Espelho*\n` +
+        `📛 *Nome:* {{ usuario.nome }}\n` +
+        `📱 *Telefone:* {{ usuario.telefone }}\n` +
+        `📧 *Email:* {{ usuario.email }}\n` +
+        `🏠 *Endereço:* {{ usuario.endereco or "Não informado" }}\n` +
+        `🏙️ *Cidade:* {{ usuario.cidade or "Não informado" }}\n` +
+        `📮 *CEP:* {{ usuario.cep or "Não informado" }}\n` +
+        `🚪 *Tipo de Produto:* {{ usuario.tipo or "Não informado" }}\n\n` +
+        `📦 *Espelho:*\n` +
+        `- *Modelo:* ${modeloSelecionado}\n` +
+        `- *Tipo:* ${tipoSelecionado}\n` +
+        `- *Largura:* ${larguraBox}\n` +
+        `Confirma seu pedido? Entre em contato para finalizar!`
+      );
+
+      const linkWhatsapp = `https://wa.me/${numeroWhatsapp}?text=${mensagem}`;
+      window.open(linkWhatsapp, "_blank");
     }
   </script>
 

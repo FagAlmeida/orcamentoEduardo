@@ -197,6 +197,8 @@
 
   <script>
     let modeloSelecionado = "";
+    let vidroSelecionado = "";
+    let larguraBox = "";
 
     function selecionarImagem(img) {
       document.querySelectorAll('.imagem-opcao').forEach(i => i.classList.remove('selecionada'));
@@ -220,13 +222,36 @@
     }
 
     function confirmarLargura() {
+      larguraBox = document.getElementById('larguraPorta').value;
       document.getElementById('campoLargura').style.display = 'none';
-      document.getElementById('botaoConfirmar').style.display = 'none';
+      document.getElementById('botaoConfirmar').style.display = 'inline-block';
       document.getElementById('opcoesVidro').style.display = 'block';
     }
 
     function selecionarVidro(vidro) {
-      alert("Vidro selecionado: " + vidro);
+      vidroSelecionado = vidro;
+
+      // Gerando a mensagem para o WhatsApp
+      const numeroWhatsapp = "+553598404619"; // Substitua pelo número do WhatsApp
+      const mensagem = encodeURIComponent(
+        `*Confirmação do Pedido - Porta*\n` +
+        `📛 *Nome:* {{ usuario.nome }}\n` +
+        `📱 *Telefone:* {{ usuario.telefone }}\n` +
+        `📧 *Email:* {{ usuario.email }}\n` +
+        `🏠 *Endereço:* {{ usuario.endereco or "Não informado" }}\n` +
+        `🏙️ *Cidade:* {{ usuario.cidade or "Não informado" }}\n` +
+        `📮 *CEP:* {{ usuario.cep or "Não informado" }}\n` +
+        `🚪 *Tipo de Produto:* {{ usuario.tipo or "Não informado" }}\n\n` +
+        `📦 *Porta:*\n` +
+        `- *Modelo:* ${modeloSelecionado}\n` +
+        `- *Largura:* ${larguraBox}\n` +
+        `- *Vidro:* ${vidroSelecionado}\n\n` +
+        `Confirma seu pedido? Entre em contato para finalizar!`
+      );
+
+      const linkWhatsapp = `https://wa.me/${numeroWhatsapp}?text=${mensagem}`;
+
+      window.open(linkWhatsapp, "_blank");
     }
   </script>
 

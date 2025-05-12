@@ -101,7 +101,7 @@
 <body>
     <header>
         <img src="{{ url_for('static', filename='img/image.jpg') }}" alt="Logo da Sam Esquadrias">
-        <h1>Preencha abaixo com suas informações pessoais</h1>
+        <h1>Preencha abaixo com suas informações</h1>
     </header>
 
     <main>
@@ -114,14 +114,17 @@
 
     <form action="{{ url_for('infop') }}" method="POST">
 
-        <label for="address">Endereço:</label>
-        <input type="text" id="address" name="address" required placeholder="Digite seu endereço">
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco" required placeholder="Digite seu endereço (Rua, Bairro)">
 
-        <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" required placeholder="Digite seu e-mail">
+        <label for="numero">Número da casa:</label>
+        <input type="text" id="numero" name="numero" required placeholder="Digite o número da casa">
 
-        <label for="whatsapp">WhatsApp:</label>
-        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="(99) 99999-9999">
+        <label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" name="cidade" required placeholder="Digite sua cidade">
+
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="cep" required placeholder="Digite seu CEP (ex: 12345-678)">
 
         <label for="tipo">Escolha o tipo:</label>
         <select id="tipo" name="tipo" required>

@@ -12,11 +12,18 @@ mongo = PyMongo(app)
 
 # Definir a coleção de usuários
 usuarios_collection = mongo.db.usuarios
+enderecos_collection = mongo.db.enderecos  # Coleção de endereços
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        telefone = request.form.get('telefone').strip()
+        telefone = request.form.get('telefone')
+        if telefone:
+            telefone = telefone.strip()
+        else:
+            erro = "Telefone não pode ser vazio!"
+            return render_template('login.html', erro=erro)
+        
         usuario = usuarios_collection.find_one({'telefone': telefone})
 
         if usuario:
@@ -30,9 +37,27 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        nome = request.form.get("nome").strip()
-        telefone = request.form.get("telefone").strip()
-        email = request.form.get("email").strip().lower()
+        nome = request.form.get("nome")
+        if nome:
+            nome = nome.strip()
+        else:
+            erro = "Nome não pode ser vazio!"
+            return render_template('register.html', erro=erro)
+
+        telefone = request.form.get("telefone")
+        if telefone:
+            telefone = telefone.strip()
+        else:
+            erro = "Telefone não pode ser vazio!"
+            return render_template('register.html', erro=erro)
+
+        email = request.form.get("email")
+        if email:
+            email = email.strip().lower()
+        else:
+            erro = "Email não pode ser vazio!"
+            return render_template('register.html', erro=erro)
+
         username = request.form.get("username") or nome.lower().replace(" ", "_")
 
         # Validação do email
@@ -61,26 +86,31 @@ def inicial():
 @app.route('/infop', methods=['GET', 'POST'])
 def infop():
     if request.method == 'POST':
-        nome = request.form.get("username")
-        endereco = request.form.get("address")
-        email = request.form.get("email")
-        whatsapp = request.form.get("whatsapp")
-        tipo = request.form.get("tipo")
-
-        if nome and endereco and email and whatsapp and tipo:
-            if tipo == "box":
-                return redirect(url_for('box'))
-            elif tipo == "espelho":
-                return redirect(url_for('espelho'))
-            elif tipo == "porta":
-                return redirect(url_for('porta'))
-            else:
-                erro = "Tipo inválido selecionado."
-                return render_template('infop.html', erro=erro)
-        else:
-            erro = "Preencha todos os campos corretamente!"
-            return render_template('infop.html', erro=erro)
-
+        # Coleta as informações do formulário
+        endereco = request.form['endereco']
+        numero = request.form['numero']
+        cidade = request.form['cidade']
+        cep = request.form['cep']
+        tipo = request.form['tipo']  # Captura a opção escolhida
+        
+        # Salva as informações no MongoDB
+        data = {
+            'endereco': endereco,
+            'numero': numero,
+            'cidade': cidade,
+            'cep': cep,
+            'tipo': tipo
+        }
+        enderecos_collection.insert_one(data)  # Insere na coleção de endereços
+        
+        # Redireciona para a página escolhida
+        if tipo == 'box':
+            return redirect(url_for('box'))
+        elif tipo == 'espelho':
+            return redirect(url_for('espelho'))
+        elif tipo == 'porta':
+            return redirect(url_for('porta'))
+        
     return render_template('infop.html')
 
 @app.route('/trabalhos')

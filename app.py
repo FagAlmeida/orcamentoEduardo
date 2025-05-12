@@ -1,11 +1,13 @@
 from flask import Flask, redirect, render_template, request, url_for, session
 from flask_pymongo import PyMongo
+import re
 
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_aqui'
 
 # Configuração do MongoDB
 app.config["MONGO_URI"] = "mongodb+srv://fagalmeida:1234@cluster0.xm9sz.mongodb.net/meu_banco?retryWrites=true&w=majority"
+
 mongo = PyMongo(app)
 
 # Definir a coleção de usuários
@@ -14,11 +16,11 @@ usuarios_collection = mongo.db.usuarios
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        telefone = request.form.get('telefone').strip()  # Garantir que não haja espaços extras
+        telefone = request.form.get('telefone').strip()
         usuario = usuarios_collection.find_one({'telefone': telefone})
 
         if usuario:
-            return redirect(url_for('infop'))  # Redireciona para a página infop.html
+            return redirect(url_for('infop'))
         else:
             erro = "Usuário não encontrado ou dados incorretos!"
             return render_template('login.html', erro=erro)
@@ -28,23 +30,23 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        nome = request.form.get("nome")
-        telefone = request.form.get("telefone")
-        username = request.form.get("username")  # Supondo que 'username' seja um campo do formulário
+        nome = request.form.get("nome").strip()
+        telefone = request.form.get("telefone").strip()
+        email = request.form.get("email").strip().lower()
+        username = request.form.get("username") or nome.lower().replace(" ", "_")
 
-        if not username:
-            # Se o username não for informado, você pode gerar um automaticamente
-            username = nome.lower().replace(" ", "_")  # Exemplo de geração de username simples
+        # Validação do email
+        if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+            erro = "Formato de email inválido!"
+            return render_template('register.html', erro=erro)
 
-        if nome and telefone:
-            # Verifica se já existe um usuário com o mesmo telefone ou username
-            usuario_existente = mongo.db.usuarios.find_one({"$or": [{"telefone": telefone}, {"username": username}]})
+        if nome and telefone and email:
+            usuario_existente = usuarios_collection.find_one({"$or": [{"telefone": telefone}, {"username": username}, {"email": email}]})
             if usuario_existente:
-                erro = "Usuário ou telefone já registrado."
-                return render_template('login.html', erro=erro)
+                erro = "Usuário, telefone ou email já registrado."
+                return render_template('register.html', erro=erro)
 
-            # Registra o novo usuário no MongoDB
-            mongo.db.usuarios.insert_one({"nome": nome, "telefone": telefone, "username": username})
+            usuarios_collection.insert_one({"nome": nome, "telefone": telefone, "username": username, "email": email})
             session['telefone'] = telefone
             return redirect(url_for('login'))
         else:
@@ -63,12 +65,9 @@ def infop():
         endereco = request.form.get("address")
         email = request.form.get("email")
         whatsapp = request.form.get("whatsapp")
-        tipo = request.form.get("tipo")  # Captura o valor do select
+        tipo = request.form.get("tipo")
 
         if nome and endereco and email and whatsapp and tipo:
-            # Aqui você pode salvar os dados no MongoDB se quiser
-            # mongo.db.usuarios.insert_one({ ... })
-
             if tipo == "box":
                 return redirect(url_for('box'))
             elif tipo == "espelho":

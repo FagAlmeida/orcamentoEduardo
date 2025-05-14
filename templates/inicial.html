@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Sam Esquadrias</title>
-
     <style>
+        /* RESET E ESTILOS GERAIS */
         html, body {
             margin: 0;
             padding: 0;
             overflow-x: hidden;
             font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
         }
 
+        /* SEÇÕES COM IMAGENS DE FUNDO */
         section {
             width: 100%;
             min-height: 100vh;
@@ -28,15 +30,10 @@
             position: relative;
             padding: 20px 0;
             box-sizing: border-box;
+            background-attachment: scroll;
         }
 
-        /* Removemos o background-attachment: fixed e adicionamos media query */
-        @media (min-width: 769px) {
-            section {
-                background-attachment: fixed; /* Só aplica o efeito parallax em desktop */
-            }
-        }
-
+        /* HEADER E NAVEGAÇÃO */
         header {
             position: absolute;
             top: 20px;
@@ -44,6 +41,7 @@
             text-align: center;
             padding: 0 20px;
             box-sizing: border-box;
+            z-index: 10;
         }
 
         header h1 {
@@ -82,13 +80,16 @@
             font-size: clamp(14px, 3vw, 16px);
             display: inline-block;
             white-space: nowrap;
+            transition: all 0.3s ease;
         }
 
         nav ul li a:hover {
             background: #fff;
             color: #155396;
+            transform: translateY(-2px);
         }
 
+        /* GALERIA */
         .galeria {
             display: flex;
             align-items: center;
@@ -99,16 +100,15 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente para melhor contraste */
-            border-radius: 10px;
+
         }
 
         .galeria img {
             width: 100%;
             max-width: 400px;
             height: auto;
-            max-height: 70vh; /* Usa 70% da altura da tela */
-            object-fit: contain; /* Garante que a imagem inteira seja visível */
+            max-height: 70vh;
+            object-fit: contain;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
@@ -121,22 +121,33 @@
             font-size: clamp(16px, 4vw, 18px);
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
             min-width: 50px;
         }
 
         .galeria button:hover {
             background-color: #700202;
+            transform: scale(1.05);
         }
 
-        /* Ajustes para mobile */
+        /* MEDIA QUERIES PARA RESPONSIVIDADE */
+        @media (min-width: 1024px) {
+            section {
+                background-attachment: fixed;
+            }
+        }
+
         @media (max-width: 768px) {
             section {
-                min-height: auto;
-                height: auto;
-                padding: 60px 0;
-                background-size: contain; /* Mostra a imagem completa */
-                background-color: #000; /* Cor de fundo para áreas não cobertas pela imagem */
+                background-size: 100% auto;
+                background-position: top center;
+                min-height: 80vh;
+            }
+            
+            @media (orientation: portrait) {
+                section {
+                    background-size: auto 100%;
+                }
             }
             
             header {
@@ -148,11 +159,11 @@
             .galeria {
                 flex-direction: column;
                 gap: 10px;
-                width: 95%; /* Mais largura em mobile */
+                width: 95%;
             }
             
             .galeria img {
-                max-height: 60vh; /* Ajuste para mobile */
+                max-height: 60vh;
             }
         }
 
@@ -171,8 +182,7 @@
             }
             
             section {
-                background-size: cover; /* Alternativa: cobre a tela mantendo proporção */
-                background-position: top center; /* Alinha ao topo */
+                min-height: 70vh;
             }
         }
     </style>
@@ -257,6 +267,33 @@
         indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
         atualizarImagem2();
     }
+
+    // Ajuste dinâmico das imagens de fundo
+    function ajustarImagensFundo() {
+        const sections = document.querySelectorAll('section');
+        
+        sections.forEach(section => {
+            const bgImg = new Image();
+            bgImg.src = section.style.backgroundImage.replace('url("', '').replace('")', '');
+            
+            bgImg.onload = function() {
+                if (window.innerWidth <= 768) {
+                    const imgRatio = bgImg.naturalWidth / bgImg.naturalHeight;
+                    const screenRatio = window.innerWidth / window.innerHeight;
+                    
+                    section.style.backgroundSize = imgRatio > screenRatio 
+                        ? 'auto 100%' 
+                        : '100% auto';
+                } else {
+                    section.style.backgroundSize = 'cover';
+                }
+            };
+        });
+    }
+
+    // Executa ao carregar e redimensionar
+    window.addEventListener('load', ajustarImagensFundo);
+    window.addEventListener('resize', ajustarImagensFundo);
 </script>
 
 </body>

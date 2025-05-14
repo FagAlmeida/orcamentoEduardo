@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Sam Esquadrias</title>
-
     <style>
         html, body {
             margin: 0;
@@ -127,7 +126,7 @@
         }
 
         /* Configuração para celular */
-        @media screen and (max-width: 700px) {
+        @media screen and (max-width: 767px) {
             header h1 {
                 font-size: 1.5em;
             }
@@ -138,13 +137,41 @@
             }
 
             .galeria img {
-                max-width: 50%;
+                max-width: 80%;
                 height: auto;
             }
 
             .galeria button {
-                font-size: 10px;
+                font-size: 16px;
             }
+        }
+
+        /* Estilo para o box */
+        .box {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 500px;
+            padding: 20px;
+
+            border-radius: 10px;
+
+        }
+
+        /* Estilo para a frase nas imagens */
+        .texto-centralizado {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            font-weight: bold;
+            color: rgba(10, 9, 9, 0.884);
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+            text-align: center;
+            white-space: nowrap; /* Evita que a frase quebre em várias linhas */
         }
     </style>
 </head>
@@ -164,21 +191,31 @@
     </header>
 </section>
 
-<!-- Segunda tela - outra imagem de fundo com galeria 1 -->
+<!-- Segunda tela - outra imagem de fundo com galeria 1 e frase centralizada -->
 <section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
+    <div class="box">
+        <div class="texto-centralizado">
+            <p>BOX</p>
+            <p>O toque final de praticidade e estilo que seu banheiro precisa!</p>
+        </div>
+    </div>
     <div class="galeria">
-        <button onclick="anterior()">&#10094;</button>
+        <button onclick="anterior()">❮</button>
         <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1">
-        <button onclick="proximo()">&#10095;</button>
+        <button onclick="proximo()">❯</button>
     </div>
 </section>
 
-<!-- Terceira tela - outra imagem de fundo com galeria 2 -->
+<!-- Terceira tela - outra imagem de fundo com galeria 2 e frase centralizada -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo4.jpg') }}');">
+    <div class="texto-centralizado">
+        <p>ESPELHOS</p>
+        <p>O que reflete você, transforma sua casa. Ouse na diversidade!</p>
+    </div>
     <div class="galeria">
-        <button onclick="anterior2()">&#10094;</button>
+        <button onclick="anterior2()">❮</button>
         <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1">
-        <button onclick="proximo2()">&#10095;</button>
+        <button onclick="proximo2()">❯</button>
     </div>
 </section>
 

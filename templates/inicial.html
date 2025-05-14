@@ -13,21 +13,22 @@
             font-family: Arial, sans-serif;
         }
 
-    section {
-        width: 100%;
-        height: 100vh;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: white;
-        position: relative;
-        margin-bottom: 1cm; /* <-- AQUI adiciona 1cm de espaçamento entre cada section */
-    }
+        section {
+            width: 100%;
+            min-height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            margin-bottom: 1cm;
+            padding: 20px;
+        }
 
         header {
             position: absolute;
@@ -36,26 +37,21 @@
             text-align: center;
         }
 
-        header h1 { /* <-- AQUI controla o título principal */
+        header h1 {
             margin: 10px 0;
             font-size: 2em;
             color: #fff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
 
-        nav {
-            margin-top: 20px;
-        }
-
         nav ul {
             list-style: none;
             padding: 0;
-            margin: 0;
-        }
-
-        nav ul li {
-            display: inline-block;
-            margin: 0 10px;
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
         }
 
         nav ul li a {
@@ -77,16 +73,15 @@
             align-items: center;
             gap: 20px;
             flex-wrap: wrap;
-            justify-content: flex-start; /* <-- Em vez de center */
+            justify-content: center;
             width: 90%;
             max-width: 1000px;
-            margin-left: -25%; /* <-- Deixa uma margem da esquerda */
         }
 
         .galeria img {
-            width: 100%; /* agora vai ocupar 100% da área disponível */
-            max-width: 400px; /* mas nunca ultrapassar 350px */
-            height: 500px; /* altura fixa */
+            width: 100%;
+            max-width: 350px;
+            height: auto;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -106,11 +101,36 @@
         .galeria button:hover {
             background-color: #700202;
         }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            .galeria img {
+                max-width: 300px;
+            }
+            .galeria button {
+                font-size: 16px;
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.2em;
+            }
+            .galeria img {
+                max-width: 250px;
+            }
+            .galeria button {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<!-- Primeira tela - imagem de fundo com texto e botão -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo.jpg') }}');">
     <header>
         <h1>Bem-vindo à Sam Esquadrias!</h1>
@@ -124,7 +144,6 @@
     </header>
 </section>
 
-<!-- Segunda tela - outra imagem de fundo com galeria 1 -->
 <section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
     <div class="galeria">
         <button onclick="anterior()">&#10094;</button>
@@ -133,7 +152,6 @@
     </div>
 </section>
 
-<!-- Terceira tela - outra imagem de fundo com galeria 2 -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo4.jpg') }}');">
     <div class="galeria">
         <button onclick="anterior2()">&#10094;</button>
@@ -143,7 +161,6 @@
 </section>
 
 <script>
-    // Galeria 1
     const imagens = [
         "{{ url_for('static', filename='img/trabalho1.jpg') }}",
         "{{ url_for('static', filename='img/trabalho2.jpg') }}",
@@ -166,7 +183,6 @@
         atualizarImagem();
     }
 
-    // Galeria 2
     const imagens2 = [
         "{{ url_for('static', filename='img/servico1.jpg') }}",
         "{{ url_for('static', filename='img/servico2.jpg') }}",

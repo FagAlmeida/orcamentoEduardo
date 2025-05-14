@@ -4,188 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Sam Esquadrias</title>
+
     <style>
-        /* RESET E ESTILOS GERAIS */
-        html, body {
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            font-family: Arial, sans-serif;
-            scroll-behavior: smooth;
-        }
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+    }
 
-        /* SEÇÕES COM IMAGENS DE FUNDO */
-        section {
-            width: 100%;
-            min-height: 100vh;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            position: relative;
-            padding: 20px 0;
-            box-sizing: border-box;
-            background-attachment: scroll;
-        }
+    section {
+        width: 100%;
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        margin-bottom: 1cm; /* AQUI adiciona 1cm de espaçamento entre cada section */
+    }
 
-        /* HEADER E NAVEGAÇÃO */
-        header {
-            position: absolute;
-            top: 20px;
-            width: 100%;
-            text-align: center;
-            padding: 0 20px;
-            box-sizing: border-box;
-            z-index: 10;
-        }
+    header {
+        position: absolute;
+        top: 20px;
+        width: 100%;
+        text-align: center;
+    }
 
+    header h1 { /* AQUI controla o título principal */
+        margin: 10px 0;
+        font-size: 2em;
+        color: #fff;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+
+    nav {
+        margin-top: 20px;
+    }
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    nav ul li {
+        display: inline-block;
+        margin: 0 10px;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.8);
+        color: #b10404;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    nav ul li a:hover {
+        background: #fff;
+        color: #155396;
+    }
+
+    .galeria {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: flex-start; /* Em vez de center */
+        width: 90%;
+        max-width: 1000px;
+        margin-left: -25%; /* Deixa uma margem da esquerda */
+    }
+
+    .galeria img {
+        width: 100%; /* Agora vai ocupar 100% da área disponível */
+        max-width: 400px; /* Mas nunca ultrapassar 350px */
+        height: 500px; /* Altura fixa */
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .galeria button {
+        background-color: #b10404;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        font-size: 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .galeria button:hover {
+        background-color: #700202;
+    }
+
+    /* Media Queries para Responsividade */
+
+    @media (max-width: 768px) {
         header h1 {
-            margin: 10px 0;
-            font-size: clamp(1.5em, 4vw, 2em);
-            color: #fff;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+            font-size: 1.5em;
         }
 
-        nav {
-            margin-top: 20px;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        nav ul li {
-            display: inline-block;
-            margin: 0 5px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.8);
-            color: #b10404;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: clamp(14px, 3vw, 16px);
-            display: inline-block;
-            white-space: nowrap;
-            transition: all 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            background: #fff;
-            color: #155396;
-            transform: translateY(-2px);
-        }
-
-        /* GALERIA */
         .galeria {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            width: 90%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-
+            margin-left: 0; /* Remover margem à esquerda em telas pequenas */
+            justify-content: center; /* Alinhar as imagens ao centro */
         }
 
         .galeria img {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            max-height: 70vh;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            max-width: 300px; /* Reduzir o tamanho das imagens em telas menores */
+            height: auto; /* Manter a proporção das imagens */
         }
-        
+
         .galeria button {
-            background-color: #b10404;
-            color: white;
-            border: none;
+            font-size: 16px; /* Reduzir o tamanho da fonte do botão */
             padding: 8px 12px;
-            font-size: clamp(16px, 4vw, 18px);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            min-width: 50px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        section {
+            padding: 20px; /* Adicionar um pouco de espaçamento em telas pequenas */
         }
 
-        .galeria button:hover {
-            background-color: #700202;
-            transform: scale(1.05);
+        header h1 {
+            font-size: 1.2em;
         }
 
-        /* MEDIA QUERIES PARA RESPONSIVIDADE */
-        @media (min-width: 1024px) {
-            section {
-                background-attachment: fixed;
-            }
+        nav ul li {
+            display: block; /* Transformar os itens do menu em blocos */
+            margin: 5px 0;
         }
 
-        @media (max-width: 768px) {
-            section {
-                background-size: 100% auto;
-                background-position: top center;
-                min-height: 80vh;
-            }
-            
-            @media (orientation: portrait) {
-                section {
-                    background-size: auto 100%;
-                }
-            }
-            
-            header {
-                position: relative;
-                top: auto;
-                margin-bottom: 20px;
-            }
-            
-            .galeria {
-                flex-direction: column;
-                gap: 10px;
-                width: 95%;
-            }
-            
-            .galeria img {
-                max-height: 60vh;
-            }
+        .galeria img {
+            max-width: 90%; /* Deixar as imagens mais estreitas em telas pequenas */
+            height: auto;
         }
 
-        @media (max-width: 480px) {
-            nav ul {
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            nav ul li {
-                margin: 5px 0;
-            }
-            
-            .galeria img {
-                max-height: 50vh;
-            }
-            
-            section {
-                min-height: 70vh;
-            }
+        .galeria button {
+            font-size: 14px; /* Ajustar o tamanho do botão */
+            padding: 8px 12px;
         }
-    </style>
+    }
+</style>
 </head>
 <body>
 
@@ -267,33 +236,6 @@
         indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
         atualizarImagem2();
     }
-
-    // Ajuste dinâmico das imagens de fundo
-    function ajustarImagensFundo() {
-        const sections = document.querySelectorAll('section');
-        
-        sections.forEach(section => {
-            const bgImg = new Image();
-            bgImg.src = section.style.backgroundImage.replace('url("', '').replace('")', '');
-            
-            bgImg.onload = function() {
-                if (window.innerWidth <= 768) {
-                    const imgRatio = bgImg.naturalWidth / bgImg.naturalHeight;
-                    const screenRatio = window.innerWidth / window.innerHeight;
-                    
-                    section.style.backgroundSize = imgRatio > screenRatio 
-                        ? 'auto 100%' 
-                        : '100% auto';
-                } else {
-                    section.style.backgroundSize = 'cover';
-                }
-            };
-        });
-    }
-
-    // Executa ao carregar e redimensionar
-    window.addEventListener('load', ajustarImagensFundo);
-    window.addEventListener('resize', ajustarImagensFundo);
 </script>
 
 </body>

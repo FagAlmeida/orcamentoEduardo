@@ -6,16 +6,20 @@
     <title>Home - Sam Esquadrias</title>
 
     <style>
-        html, body {
+        * {
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        body {
             font-family: Arial, sans-serif;
+            overflow-x: hidden;
         }
 
         section {
             width: 100%;
-            min-height: 100vh;
+            height: 100vh;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -23,11 +27,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
             color: white;
             position: relative;
-            margin-bottom: 1cm;
             padding: 20px;
+            margin-bottom: 1cm;
         }
 
         header {
@@ -35,10 +38,11 @@
             top: 20px;
             width: 100%;
             text-align: center;
+            padding: 0 15px;
         }
 
         header h1 {
-            margin: 10px 0;
+            margin-bottom: 15px;
             font-size: 2em;
             color: #fff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
@@ -47,20 +51,22 @@
         nav ul {
             list-style: none;
             padding: 0;
-            margin: 20px 0;
+            margin: 0;
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
             justify-content: center;
+            gap: 15px;
         }
 
         nav ul li a {
             text-decoration: none;
             background: rgba(255, 255, 255, 0.8);
             color: #b10404;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border-radius: 5px;
             font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 1em;
         }
 
         nav ul li a:hover {
@@ -71,20 +77,22 @@
         .galeria {
             display: flex;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            gap: 10px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
             justify-content: center;
-            width: 90%;
-            max-width: 1000px;
+            width: 100%;
+            padding: 0 15px;
         }
 
         .galeria img {
-            width: 100%;
-            max-width: 350px;
+            width: 90%;
+            max-width: 400px;
             height: auto;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
         }
         
         .galeria button {
@@ -96,6 +104,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
+            flex-shrink: 0;
         }
 
         .galeria button:hover {
@@ -106,25 +115,9 @@
             header h1 {
                 font-size: 1.5em;
             }
-            .galeria img {
-                max-width: 300px;
-            }
-            .galeria button {
-                font-size: 16px;
-                padding: 8px 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.2em;
-            }
-            .galeria img {
-                max-width: 250px;
-            }
-            .galeria button {
-                font-size: 14px;
-                padding: 6px 10px;
+            nav ul li a {
+                font-size: 0.9em;
+                padding: 8px 15px;
             }
         }
     </style>
@@ -159,52 +152,6 @@
         <button onclick="proximo2()">&#10095;</button>
     </div>
 </section>
-
-<script>
-    const imagens = [
-        "{{ url_for('static', filename='img/trabalho1.jpg') }}",
-        "{{ url_for('static', filename='img/trabalho2.jpg') }}",
-        "{{ url_for('static', filename='img/trabalho3.jpg') }}",
-        "{{ url_for('static', filename='img/trabalho4.jpg') }}"
-    ];
-    let indice = 0;
-
-    function atualizarImagem() {
-        document.getElementById('foto').src = imagens[indice];
-    }
-
-    function proximo() {
-        indice = (indice + 1) % imagens.length;
-        atualizarImagem();
-    }
-
-    function anterior() {
-        indice = (indice - 1 + imagens.length) % imagens.length;
-        atualizarImagem();
-    }
-
-    const imagens2 = [
-        "{{ url_for('static', filename='img/servico1.jpg') }}",
-        "{{ url_for('static', filename='img/servico2.jpg') }}",
-        "{{ url_for('static', filename='img/servico3.jpg') }}",
-        "{{ url_for('static', filename='img/servico4.jpg') }}"
-    ];
-    let indice2 = 0;
-
-    function atualizarImagem2() {
-        document.getElementById('foto2').src = imagens2[indice2];
-    }
-
-    function proximo2() {
-        indice2 = (indice2 + 1) % imagens2.length;
-        atualizarImagem2();
-    }
-
-    function anterior2() {
-        indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
-        atualizarImagem2();
-    }
-</script>
 
 </body>
 </html>

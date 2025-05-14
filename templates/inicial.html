@@ -15,11 +15,10 @@
 
         section {
             width: 100%;
-            min-height: 100vh; /* Mudei para min-height para conteúdo maior que a tela */
+            min-height: 100vh;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* Faz o fundo ficar fixo durante scroll */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -27,8 +26,15 @@
             text-align: center;
             color: white;
             position: relative;
-            padding: 20px 0; /* Adiciona espaçamento interno */
+            padding: 20px 0;
             box-sizing: border-box;
+        }
+
+        /* Removemos o background-attachment: fixed e adicionamos media query */
+        @media (min-width: 769px) {
+            section {
+                background-attachment: fixed; /* Só aplica o efeito parallax em desktop */
+            }
         }
 
         header {
@@ -36,13 +42,13 @@
             top: 20px;
             width: 100%;
             text-align: center;
-            padding: 0 20px; /* Adiciona padding para não colar nas bordas */
+            padding: 0 20px;
             box-sizing: border-box;
         }
 
         header h1 {
             margin: 10px 0;
-            font-size: clamp(1.5em, 4vw, 2em); /* Tamanho responsivo */
+            font-size: clamp(1.5em, 4vw, 2em);
             color: #fff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
@@ -56,26 +62,26 @@
             padding: 0;
             margin: 0;
             display: flex;
-            flex-wrap: wrap; /* Permite que os itens quebrem linha */
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 10px; /* Espaço entre itens */
+            gap: 10px;
         }
 
         nav ul li {
             display: inline-block;
-            margin: 0 5px; /* Reduzi a margem */
+            margin: 0 5px;
         }
 
         nav ul li a {
             text-decoration: none;
             background: rgba(255, 255, 255, 0.8);
             color: #b10404;
-            padding: 8px 12px; /* Reduzi o padding */
+            padding: 8px 12px;
             border-radius: 5px;
             font-weight: bold;
-            font-size: clamp(14px, 3vw, 16px); /* Tamanho responsivo */
+            font-size: clamp(14px, 3vw, 16px);
             display: inline-block;
-            white-space: nowrap; /* Evita quebra de texto */
+            white-space: nowrap;
         }
 
         nav ul li a:hover {
@@ -86,21 +92,23 @@
         .galeria {
             display: flex;
             align-items: center;
-            justify-content: center; /* Centraliza o conteúdo */
+            justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
             width: 90%;
             max-width: 1000px;
-            margin: 0 auto; /* Centraliza a galeria */
+            margin: 0 auto;
             padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente para melhor contraste */
+            border-radius: 10px;
         }
 
         .galeria img {
             width: 100%;
             max-width: 400px;
-            height: auto; /* Altura automática */
-            max-height: 500px; /* Altura máxima */
-            object-fit: cover;
+            height: auto;
+            max-height: 70vh; /* Usa 70% da altura da tela */
+            object-fit: contain; /* Garante que a imagem inteira seja visível */
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
@@ -114,19 +122,21 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
-            min-width: 50px; /* Largura mínima para manter consistência */
+            min-width: 50px;
         }
 
         .galeria button:hover {
             background-color: #700202;
         }
 
-        /* Media Queries para ajustes específicos */
+        /* Ajustes para mobile */
         @media (max-width: 768px) {
             section {
-                min-height: auto; /* Altura automática em telas menores */
+                min-height: auto;
                 height: auto;
-                padding: 60px 0; /* Mais espaço para o conteúdo */
+                padding: 60px 0;
+                background-size: contain; /* Mostra a imagem completa */
+                background-color: #000; /* Cor de fundo para áreas não cobertas pela imagem */
             }
             
             header {
@@ -136,18 +146,19 @@
             }
             
             .galeria {
-                flex-direction: column; /* Empilha os elementos em telas pequenas */
+                flex-direction: column;
                 gap: 10px;
+                width: 95%; /* Mais largura em mobile */
             }
             
             .galeria img {
-                max-height: 300px; /* Reduz a altura máxima em mobile */
+                max-height: 60vh; /* Ajuste para mobile */
             }
         }
 
         @media (max-width: 480px) {
             nav ul {
-                flex-direction: column; /* Botões em coluna em telas muito pequenas */
+                flex-direction: column;
                 gap: 5px;
             }
             
@@ -156,7 +167,12 @@
             }
             
             .galeria img {
-                max-height: 250px;
+                max-height: 50vh;
+            }
+            
+            section {
+                background-size: cover; /* Alternativa: cobre a tela mantendo proporção */
+                background-position: top center; /* Alinha ao topo */
             }
         }
     </style>

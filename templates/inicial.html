@@ -6,31 +6,29 @@
     <title>Home - Sam Esquadrias</title>
 
     <style>
-        * {
+        html, body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
             overflow-x: hidden;
+            font-family: Arial, sans-serif;
         }
 
         section {
             width: 100%;
-            height: 100vh;
+            min-height: 100vh; /* Mudei para min-height para conteúdo maior que a tela */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed; /* Faz o fundo ficar fixo durante scroll */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
             color: white;
             position: relative;
-            padding: 20px;
-            margin-bottom: 1cm;
+            padding: 20px 0; /* Adiciona espaçamento interno */
+            box-sizing: border-box;
         }
 
         header {
@@ -38,14 +36,19 @@
             top: 20px;
             width: 100%;
             text-align: center;
-            padding: 0 15px;
+            padding: 0 20px; /* Adiciona padding para não colar nas bordas */
+            box-sizing: border-box;
         }
 
         header h1 {
-            margin-bottom: 15px;
-            font-size: 2em;
+            margin: 10px 0;
+            font-size: clamp(1.5em, 4vw, 2em); /* Tamanho responsivo */
             color: #fff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        }
+
+        nav {
+            margin-top: 20px;
         }
 
         nav ul {
@@ -53,20 +56,26 @@
             padding: 0;
             margin: 0;
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Permite que os itens quebrem linha */
             justify-content: center;
-            gap: 15px;
+            gap: 10px; /* Espaço entre itens */
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 5px; /* Reduzi a margem */
         }
 
         nav ul li a {
             text-decoration: none;
             background: rgba(255, 255, 255, 0.8);
             color: #b10404;
-            padding: 10px 20px;
+            padding: 8px 12px; /* Reduzi o padding */
             border-radius: 5px;
             font-weight: bold;
-            transition: background-color 0.3s, color 0.3s;
-            font-size: 1em;
+            font-size: clamp(14px, 3vw, 16px); /* Tamanho responsivo */
+            display: inline-block;
+            white-space: nowrap; /* Evita quebra de texto */
         }
 
         nav ul li a:hover {
@@ -77,53 +86,84 @@
         .galeria {
             display: flex;
             align-items: center;
-            gap: 10px;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            justify-content: center;
-            width: 100%;
-            padding: 0 15px;
+            justify-content: center; /* Centraliza o conteúdo */
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto; /* Centraliza a galeria */
+            padding: 20px;
         }
 
         .galeria img {
-            width: 90%;
+            width: 100%;
             max-width: 400px;
-            height: auto;
+            height: auto; /* Altura automática */
+            max-height: 500px; /* Altura máxima */
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            flex-shrink: 0;
         }
         
         .galeria button {
             background-color: #b10404;
             color: white;
             border: none;
-            padding: 10px 15px;
-            font-size: 18px;
+            padding: 8px 12px;
+            font-size: clamp(16px, 4vw, 18px);
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
-            flex-shrink: 0;
+            min-width: 50px; /* Largura mínima para manter consistência */
         }
 
         .galeria button:hover {
             background-color: #700202;
         }
 
+        /* Media Queries para ajustes específicos */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.5em;
+            section {
+                min-height: auto; /* Altura automática em telas menores */
+                height: auto;
+                padding: 60px 0; /* Mais espaço para o conteúdo */
             }
-            nav ul li a {
-                font-size: 0.9em;
-                padding: 8px 15px;
+            
+            header {
+                position: relative;
+                top: auto;
+                margin-bottom: 20px;
+            }
+            
+            .galeria {
+                flex-direction: column; /* Empilha os elementos em telas pequenas */
+                gap: 10px;
+            }
+            
+            .galeria img {
+                max-height: 300px; /* Reduz a altura máxima em mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column; /* Botões em coluna em telas muito pequenas */
+                gap: 5px;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+            
+            .galeria img {
+                max-height: 250px;
             }
         }
     </style>
 </head>
 <body>
 
+<!-- Primeira tela - imagem de fundo com texto e botão -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo.jpg') }}');">
     <header>
         <h1>Bem-vindo à Sam Esquadrias!</h1>
@@ -137,6 +177,7 @@
     </header>
 </section>
 
+<!-- Segunda tela - outra imagem de fundo com galeria 1 -->
 <section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
     <div class="galeria">
         <button onclick="anterior()">&#10094;</button>
@@ -145,6 +186,7 @@
     </div>
 </section>
 
+<!-- Terceira tela - outra imagem de fundo com galeria 2 -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo4.jpg') }}');">
     <div class="galeria">
         <button onclick="anterior2()">&#10094;</button>
@@ -152,6 +194,54 @@
         <button onclick="proximo2()">&#10095;</button>
     </div>
 </section>
+
+<script>
+    // Galeria 1
+    const imagens = [
+        "{{ url_for('static', filename='img/trabalho1.jpg') }}",
+        "{{ url_for('static', filename='img/trabalho2.jpg') }}",
+        "{{ url_for('static', filename='img/trabalho3.jpg') }}",
+        "{{ url_for('static', filename='img/trabalho4.jpg') }}"
+    ];
+    let indice = 0;
+
+    function atualizarImagem() {
+        document.getElementById('foto').src = imagens[indice];
+    }
+
+    function proximo() {
+        indice = (indice + 1) % imagens.length;
+        atualizarImagem();
+    }
+
+    function anterior() {
+        indice = (indice - 1 + imagens.length) % imagens.length;
+        atualizarImagem();
+    }
+
+    // Galeria 2
+    const imagens2 = [
+        "{{ url_for('static', filename='img/servico1.jpg') }}",
+        "{{ url_for('static', filename='img/servico2.jpg') }}",
+        "{{ url_for('static', filename='img/servico3.jpg') }}",
+        "{{ url_for('static', filename='img/servico4.jpg') }}"
+    ];
+    let indice2 = 0;
+
+    function atualizarImagem2() {
+        document.getElementById('foto2').src = imagens2[indice2];
+    }
+
+    function proximo2() {
+        indice2 = (indice2 + 1) % imagens2.length;
+        atualizarImagem2();
+    }
+
+    function anterior2() {
+        indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
+        atualizarImagem2();
+    }
+</script>
 
 </body>
 </html>

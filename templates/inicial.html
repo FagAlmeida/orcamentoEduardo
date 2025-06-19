@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Sam Esquadrias</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home - Sam Esquadrias (Mobile)</title>
     <style>
-        /* Estilos gerais */
+        /* Estilos básicos e responsivos para mobile */
         html, body {
             margin: 0;
             padding: 0;
             overflow-x: hidden;
             font-family: Arial, sans-serif;
+            height: 100%;
         }
 
         section {
@@ -29,38 +30,58 @@
             margin-bottom: 1cm;
         }
 
+        /* HEADER agora ocupa 100% altura e usa flex para centralizar nav vertical e horizontalmente */
         header {
             position: absolute;
-            top: 20px;
+            top: 0;
+            left: 0;
             width: 100%;
-            text-align: center;
+            height: 100%; /* ocupa toda altura da section */
+            display: flex;
+            justify-content: center; /* centraliza horizontal */
+            align-items: center;     /* centraliza vertical */
+            pointer-events: none; /* para deixar clicar só nos links */
+        }
+
+        nav {
+            pointer-events: auto; /* reativa clique no nav */
+            position: relative;
+            top: -70px; /* sobe 20px */
         }
 
         header h1 {
             margin: 10px 0;
-            font-size: 2em;
+            font-size: 1.5em; /* versão mobile */
             color: #fff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
 
         nav ul {
-            list-style: none;
+            display: flex;
+            flex-direction: column; /* um botão em cima do outro */
+            align-items: center;    /* centraliza os botões */
+            gap: 30px;              /* espaço entre os botões */
             padding: 0;
             margin: 0;
+            list-style: none;
         }
 
         nav ul li {
-            display: inline-block;
-            margin: 0 10px;
+            /* removido display inline-block porque flex já faz */
+            margin: 0;
         }
-
         nav ul li a {
             text-decoration: none;
-            background: rgba(255, 255, 255, 0.8);
-            color: #b10404;
-            padding: 10px 15px;
-            border-radius: 5px;
+            background: rgb(189, 182, 182); /* tira o fundo branco */
+            
+            color: black;
+            padding: 10px 20px;
+            border-radius: 50px;
             font-weight: bold;
+            width: auto;
+            text-align: center;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         nav ul li a:hover {
@@ -68,95 +89,40 @@
             color: #155396;
         }
 
-        /* Configurações específicas para dispositivos móveis */
-        @media (max-width: 767px) {
-            header h1 {
-                font-size: 1.5em;
-            }
+        .galeria {
+            width: 100%;
+            margin-left: 0;
+            justify-content: center;
+            gap: 10px;
+            display: flex;
+            align-items: center;
+            
 
-            .galeria {
-                width: 70%;
-                margin-left: 0;
-                justify-content: center;
-                gap: 15px;
-            }
+        }
 
-            .galeria img {
-                max-width: 80%;
-                height: auto;
-            }
+        .galeria img {
+            width: 70%;
+            margin-left: 0;
+            margin-top: 70px; /* aumenta o espaço entre o texto e a galeria */
+            justify-content: center;
+            gap: 15px;
+            display: flex;
+            align-items: center; /* caso queira alinhar verticalmente os botões */
+        }
+        
 
         .galeria button {
             background-color: #b10404;
             color: white;
             border: none;
-            padding: 10px 15px;
-            font-size: 18px;
-            border-radius: 8px;
+            padding: 8px 8px;
+            font-size: 15px;
+            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        }
 
-        /* Configurações específicas para computadores */
-        @media (min-width: 768px) {
-            header h1 {
-                font-size: 3em;
-            }
 
-            .galeria {
-                width: 90%;
-                max-width: 1000px;
-                margin-left: -400px; /* Ajuste horizontal da galeria */
-                justify-content: flex-start;
-            }
-
-            .galeria img {
-                width: 500px;   /* largura fixa */
-                height: 550px;  /* altura fixa */
-                object-fit: cover; /* para cortar e preencher a área, mantendo proporção */
-            }
-
-        .galeria button {
-            background-color: #b10404;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            position: relative;
-            top: -250px; /* sobe 10px */
-        }
-        }
-    
-
-        /* Estilo para o box */
-        .box {
-            position: absolute;
-            top: 15%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 500px;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        /* Estilo para a frase nas imagens */
-        .texto-centralizado {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2em;
-            font-weight: bold;
-            color: rgba(10, 9, 9, 0.884);
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-            text-align: center;
-            white-space: nowrap;
-        }
     </style>
 </head>
 <body>
@@ -164,8 +130,6 @@
 <!-- Primeira tela -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo.jpg') }}');">
     <header>
-        <h1>Bem-vindo à Sam Esquadrias!</h1>
-        <h1>Serviços e manutenção em alumínio, janelas e box.</h1>
         <nav>
             <ul>
                 <li><a href="{{ url_for('login') }}">Realize seu orçamento</a></li>
@@ -178,34 +142,22 @@
 <!-- Segunda tela -->
 <section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
     <div class="box">
-        <div class="texto-centralizado">
-            <p>BOX</p>
-            <p>O toque final de praticidade e estilo que seu banheiro precisa!</p>
-        </div>
     </div>
     <div class="galeria">
         <button onclick="anterior()">❮</button>
-        <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1">
+        <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1" />
         <button onclick="proximo()">❯</button>
     </div>
 </section>
 
 <!-- Terceira tela -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo4.jpg') }}');">
-    <div class="texto-centralizado">
-        <p>ESPELHOS</p>
-        <p>O que reflete você, transforma sua casa. Ouse na diversidade!</p>
-    </div>
     <div class="galeria">
         <button onclick="anterior2()">❮</button>
-        <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1">
+        <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1" />
         <button onclick="proximo2()">❯</button>
     </div>
 </section>
-
-</body>
-</html>
-
 
 <script>
     // Galeria 1

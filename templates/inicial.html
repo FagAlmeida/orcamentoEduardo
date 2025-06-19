@@ -30,50 +30,48 @@
             margin-bottom: 1cm;
         }
 
-        /* HEADER agora ocupa 100% altura e usa flex para centralizar nav vertical e horizontalmente */
         header {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%; /* ocupa toda altura da section */
+            height: 100%;
             display: flex;
-            justify-content: center; /* centraliza horizontal */
-            align-items: center;     /* centraliza vertical */
-            pointer-events: none; /* para deixar clicar só nos links */
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
         }
 
         nav {
-            pointer-events: auto; /* reativa clique no nav */
+            pointer-events: auto;
             position: relative;
-            top: -70px; /* sobe 20px */
+            top: -70px;
         }
 
         header h1 {
             margin: 10px 0;
-            font-size: 1.5em; /* versão mobile */
+            font-size: 1.5em;
             color: #fff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
 
         nav ul {
             display: flex;
-            flex-direction: column; /* um botão em cima do outro */
-            align-items: center;    /* centraliza os botões */
-            gap: 30px;              /* espaço entre os botões */
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
             padding: 0;
             margin: 0;
             list-style: none;
         }
 
         nav ul li {
-            /* removido display inline-block porque flex já faz */
             margin: 0;
         }
+
         nav ul li a {
             text-decoration: none;
-            background: rgb(189, 182, 182); /* tira o fundo branco */
-            
+            background: rgb(189, 182, 182);
             color: black;
             padding: 10px 20px;
             border-radius: 50px;
@@ -96,20 +94,17 @@
             gap: 10px;
             display: flex;
             align-items: center;
-            
-
         }
 
         .galeria img {
             width: 70%;
             margin-left: 0;
-            margin-top: 70px; /* aumenta o espaço entre o texto e a galeria */
+            margin-top: 70px;
             justify-content: center;
             gap: 15px;
             display: flex;
-            align-items: center; /* caso queira alinhar verticalmente os botões */
+            align-items: center;
         }
-        
 
         .galeria button {
             background-color: #700202;
@@ -122,7 +117,55 @@
             transition: background-color 0.3s;
         }
 
+        /* RESPONSIVIDADE TABLET */
+        @media (min-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
 
+            nav ul {
+                flex-direction: row;
+                gap: 40px;
+            }
+
+            nav {
+                top: -100px;
+            }
+
+            .galeria img {
+                width: 60%;
+            }
+
+            .galeria button {
+                padding: 10px 15px;
+                font-size: 18px;
+            }
+        }
+
+        /* RESPONSIVIDADE DESKTOP */
+        @media (min-width: 1024px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            nav ul {
+                gap: 60px;
+            }
+
+            .galeria {
+                gap: 30px;
+            }
+
+            .galeria img {
+              width: 400px;
+              height: 400px;
+            }
+
+            .galeria button {
+                padding: 12px 20px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -141,8 +184,7 @@
 
 <!-- Segunda tela -->
 <section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
-    <div class="box">
-    </div>
+    <div class="box"></div>
     <div class="galeria">
         <button onclick="anterior()">❮</button>
         <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1" />

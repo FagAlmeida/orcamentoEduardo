@@ -96,14 +96,15 @@
             align-items: center;
         }
 
-.galeria img {
-  width: 300px;         /* largura fixa */
-  height: 400px;        /* altura fixa para padronizar */
-  object-fit: cover;    /* cobre o espaço uniformemente */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
+        .galeria img {
+        width: 300px;         /* largura fixa */
+        height: 300px;        /* altura fixa para padronizar */
+        object-fit: cover;    /* cobre o espaço uniformemente */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        }
+
 
         .galeria button {
             background-color: #700202;
@@ -116,7 +117,6 @@
             transition: background-color 0.3s;
         }
 
-        /* RESPONSIVIDADE TABLET */
         @media (min-width: 768px) {
             header h1 {
                 font-size: 2em;
@@ -141,7 +141,6 @@
             }
         }
 
-        /* RESPONSIVIDADE DESKTOP */
         @media (min-width: 1024px) {
             header h1 {
                 font-size: 2.5em;
@@ -156,8 +155,8 @@
             }
 
             .galeria img {
-              width: 400px;
-              height: 400px;
+                width: 400px;
+                height: 400px;
             }
 
             .galeria button {
@@ -169,7 +168,6 @@
 </head>
 <body>
 
-<!-- Primeira tela -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo.jpg') }}');">
     <header>
         <nav>
@@ -181,7 +179,6 @@
     </header>
 </section>
 
-<!-- Segunda tela -->
 <section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
     <div class="box"></div>
     <div class="galeria">
@@ -191,12 +188,19 @@
     </div>
 </section>
 
-<!-- Terceira tela -->
 <section style="background-image: url('{{ url_for('static', filename='img/fundo4.jpg') }}');">
     <div class="galeria">
         <button onclick="anterior2()">❮</button>
         <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1" />
         <button onclick="proximo2()">❯</button>
+    </div>
+</section>
+
+<section style="background-image: url('{{ url_for('static', filename='img/fundo5.jpg') }}');">
+    <div class="galeria">
+        <button onclick="anterior3()">❮</button>
+        <img id="foto3" src="{{ url_for('static', filename='img/galeria4.jpg') }}" alt="Galeria 3 Imagem 1" />
+        <button onclick="proximo3()">❯</button>
     </div>
 </section>
 
@@ -245,6 +249,31 @@
     function anterior2() {
         indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
         atualizarImagem2();
+    }
+
+    // Galeria 3
+    const imagens3 = [
+        "{{ url_for('static', filename='img/galeria4.jpg') }}",
+        "{{ url_for('static', filename='img/galeria4-1.jpg') }}",
+        "{{ url_for('static', filename='img/galeria4-2.jpg') }}",
+        "{{ url_for('static', filename='img/galeria4-3.jpg') }}",
+        "{{ url_for('static', filename='img/galeria4-4.jpg') }}",
+        "{{ url_for('static', filename='img/galeria4-5.jpg') }}"
+    ];
+    let indice3 = 0;
+
+    function atualizarImagem3() {
+        document.getElementById('foto3').src = imagens3[indice3];
+    }
+
+    function proximo3() {
+        indice3 = (indice3 + 1) % imagens3.length;
+        atualizarImagem3();
+    }
+
+    function anterior3() {
+        indice3 = (indice3 - 1 + imagens3.length) % imagens3.length;
+        atualizarImagem3();
     }
 </script>
 

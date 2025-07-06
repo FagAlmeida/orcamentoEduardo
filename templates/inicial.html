@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Home - Sam Esquadrias (Mobile)</title>
     <style>
-        /* Estilos básicos e responsivos para mobile */
         html, body {
             margin: 0;
             padding: 0;
@@ -37,15 +36,27 @@
             width: 100%;
             height: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
             pointer-events: none;
+        }
+
+        .logo-container {
+            margin-top: 20px;
+            pointer-events: auto;
+        }
+
+        .logo-container img {
+            max-width: 150px;
+
+            color: #ad0e0e;
         }
 
         nav {
             pointer-events: auto;
             position: relative;
-            top: -70px;
+            top: -30px;
         }
 
         header h1 {
@@ -63,10 +74,6 @@
             padding: 0;
             margin: 0;
             list-style: none;
-        }
-
-        nav ul li {
-            margin: 0;
         }
 
         nav ul li a {
@@ -97,14 +104,13 @@
         }
 
         .galeria img {
-        width: 300px;         /* largura fixa */
-        height: 300px;        /* altura fixa para padronizar */
-        object-fit: cover;    /* cobre o espaço uniformemente */
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
-
 
         .galeria button {
             background-color: #700202;
@@ -128,7 +134,7 @@
             }
 
             nav {
-                top: -100px;
+                top: -50px;
             }
 
             .galeria img {
@@ -170,6 +176,9 @@
 
 <section style="background-image: url('{{ url_for('static', filename='img/fundo.jpg') }}');">
     <header>
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='img/logo-sam.jpg') }}" alt="Logo Sam Esquadrias" />
+        </div>
         <nav>
             <ul>
                 <li><a href="{{ url_for('login') }}">Realize seu orçamento</a></li>

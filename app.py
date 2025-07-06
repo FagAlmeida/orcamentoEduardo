@@ -40,20 +40,37 @@ def login():
 def register():
     if request.method == 'POST':
         nome = request.form.get("nome")
+        cpf = request.form.get("cpf")
+        endereco = request.form.get("endereco")
+        numero = request.form.get("numero")
+        cidade = request.form.get("cidade")
+        cep = request.form.get("cep")
         telefone = request.form.get("telefone")
-        email = request.form.get("email")
 
-        if not nome or not telefone or not email:
+        if not nome or not cpf or not endereco or not numero or not cidade or not cep or not telefone:
             erro = "Preencha todos os campos!"
             return render_template('register.html', erro=erro)
 
-        usuario_existente = usuarios_collection.find_one({"$or": [{"telefone": telefone}, {"email": email}]})
+        usuario_existente = usuarios_collection.find_one({
+            "$or": [
+                {"telefone": telefone},
+                {"cpf": cpf}
+            ]
+        })
         if usuario_existente:
             erro = "Usuário já registrado!"
             return render_template('register.html', erro=erro)
 
-        # Cria o perfil do usuário
-        usuarios_collection.insert_one({"nome": nome, "telefone": telefone, "email": email})
+        usuarios_collection.insert_one({
+            "nome": nome,
+            "cpf": cpf,
+            "endereco": endereco,
+            "numero": numero,
+            "cidade": cidade,
+            "cep": cep,
+            "telefone": telefone
+        })
+
         session['telefone'] = telefone
         return redirect(url_for('infop'))
 
@@ -95,7 +112,6 @@ def infop():
     return render_template('infop.html')
 
 
-
 @app.route('/box', methods=['GET', 'POST'])
 def box():
     if 'telefone' not in session:
@@ -123,12 +139,11 @@ def box():
             }}
         )
 
-        # Monta a mensagem para o WhatsApp
+        # Monta a mensagem para o WhatsApp (sem email)
         mensagem = f"""
         *Confirmação do Pedido - Box*
         📛 *Nome:* {usuario['nome']}
         📱 *Telefone:* {usuario['telefone']}
-        📧 *Email:* {usuario['email']}
         🏠 *Endereço:* {usuario.get('endereco', 'Não informado')}, {usuario.get('numero', 'Não informado')}
         🏙️ *Cidade:* {usuario.get('cidade', 'Não informado')}
         📮 *CEP:* {usuario.get('cep', 'Não informado')}
@@ -143,17 +158,14 @@ def box():
         Confirma seu pedido? Entre em contato para finalizar!
         """
 
-        # Codifica a mensagem para URL
         mensagem_encoded = urllib.parse.quote(mensagem.strip())
         meu_numero = "+553598404619"  # Substitua pelo seu número com DDI e DDD
         whatsapp_url = f"https://wa.me/{meu_numero}?text={mensagem_encoded}"
         
-        # Redireciona para o WhatsApp
         return redirect(whatsapp_url)
     
     return render_template('box.html', usuario=usuario)
 
-    
 @app.route('/espelho', methods=['GET', 'POST'])
 def espelho():
     if 'telefone' not in session:
@@ -181,12 +193,11 @@ def espelho():
             }}
         )
 
-        # Monta a mensagem para o WhatsApp
+        # Monta a mensagem para o WhatsApp (sem email)
         mensagem = f"""
         *Confirmação do Pedido - Espelho*
         📛 *Nome:* {usuario['nome']}
         📱 *Telefone:* {usuario['telefone']}
-        📧 *Email:* {usuario['email']}
         🏠 *Endereço:* {usuario.get('endereco', 'Não informado')}, {usuario.get('numero', 'Não informado')}
         🏙️ *Cidade:* {usuario.get('cidade', 'Não informado')}
         📮 *CEP:* {usuario.get('cep', 'Não informado')}
@@ -201,12 +212,10 @@ def espelho():
         Confirma seu pedido? Entre em contato para finalizar!
         """
 
-        # Codifica a mensagem para URL
         mensagem_encoded = urllib.parse.quote(mensagem.strip())
         meu_numero = "+553598404619"  # Substitua pelo seu número com DDI e DDD
         whatsapp_url = f"https://wa.me/{meu_numero}?text={mensagem_encoded}"
         
-        # Redireciona para o WhatsApp
         return redirect(whatsapp_url)
     
     return render_template('espelho.html', usuario=usuario)
@@ -214,7 +223,7 @@ def espelho():
 @app.route('/porta', methods=['GET', 'POST'])
 def porta():
     if 'telefone' not in session:
-        return redirect(url_for('login'))  # Redireciona para login caso não tenha telefone na sessão
+        return redirect(url_for('login'))
 
     telefone = session['telefone']
     usuario = usuarios_collection.find_one({"telefone": telefone})

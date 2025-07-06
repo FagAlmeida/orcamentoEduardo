@@ -130,7 +130,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      display: none; /* Inicialmente oculto */
+      display: none;
     }
 
     button:hover {
@@ -150,32 +150,39 @@
   <main>
     <p>Veja os modelos de espelho disponíveis e selecione o que melhor se adapta ao seu espaço.</p>
 
-    <div class="container-flex">
-      <div class="galeria">
-        <div class="imagem-container">
-          <div class="titulo-imagem">RETANGULAR</div>
-          <img src="{{ url_for('static', filename='img/espelho1.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+    <form method="POST">
+      <input type="hidden" name="modelo" id="modeloInput">
+      <input type="hidden" name="tipo" value="Espelho">
+      <input type="hidden" name="largura" id="larguraInput">
+      <input type="hidden" name="vidro" value="Comum">
+
+      <div class="container-flex">
+        <div class="galeria">
+          <div class="imagem-container">
+            <div class="titulo-imagem">RETANGULAR</div>
+            <img src="{{ url_for('static', filename='img/espelho1.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+          </div>
+
+          <div class="imagem-container">
+            <div class="titulo-imagem">REDONDO</div>
+            <img src="{{ url_for('static', filename='img/espelho2.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+          </div>
+
+          <div class="imagem-container">
+            <div class="titulo-imagem">ORGÂNICO</div>
+            <img src="{{ url_for('static', filename='img/espelho3.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+          </div>
         </div>
 
-        <div class="imagem-container">
-          <div class="titulo-imagem">REDONDO</div>
-          <img src="{{ url_for('static', filename='img/espelho2.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
-        </div>
-
-        <div class="imagem-container">
-          <div class="titulo-imagem">ORGÂNICO</div>
-          <img src="{{ url_for('static', filename='img/espelho3.jpg') }}" class="imagem-opcao" onclick="selecionarImagem(this)">
+        <div class="lado-direito">
+          <div class="campo-largura" id="campoLargura">
+            <label for="dimensaoEspelho">Informe as dimensões do espelho:</label>
+            <input type="text" id="dimensaoEspelho" placeholder="Ex: 90x180" oninput="verificarLargura()" />
+          </div>
+          <button id="btnConfirmar" type="submit">Confirmar Pedido</button>
         </div>
       </div>
-
-      <div class="lado-direito">
-        <div class="campo-largura" id="campoLargura">
-          <label for="dimensaoEspelho">Informe as dimensões do espelho:</label>
-          <input type="text" id="dimensaoEspelho" placeholder="Ex: 90x180" oninput="verificarLargura()" />
-        </div>
-        <button id="btnConfirmar" onclick="enviarWhatsapp()">Confirmar Pedido</button>
-      </div>
-    </div>
+    </form>
   </main>
 
   <footer>
@@ -183,21 +190,17 @@
   </footer>
 
   <script>
-    let modeloSelecionado = "";
-    let tipoSelecionado = "Espelho"; // Tipo fixo para este caso
-    let larguraBox = ""; // Inicializado vazio
-    let vidroSelecionado = "Comum"; // Exemplo de valor fixo para vidro
-
     function selecionarImagem(img) {
       const imagens = document.querySelectorAll('.imagem-opcao');
       imagens.forEach(imagem => imagem.classList.remove('selecionada'));
       img.classList.add('selecionada');
 
-      modeloSelecionado = img.parentElement.querySelector('.titulo-imagem').textContent.trim();
+      const modelo = img.parentElement.querySelector('.titulo-imagem').textContent.trim();
+      document.getElementById('modeloInput').value = modelo;
 
       document.getElementById('campoLargura').style.display = 'block';
       document.getElementById('dimensaoEspelho').value = "";
-      document.getElementById('btnConfirmar').style.display = 'none'; // Oculta o botão inicialmente
+      document.getElementById('btnConfirmar').style.display = 'none';
     }
 
     function verificarLargura() {
@@ -205,34 +208,11 @@
       const formato = /^\d+\s*[xX]\s*\d+$/;
 
       if (formato.test(valor)) {
-        larguraBox = valor;
-        document.getElementById('btnConfirmar').style.display = 'block'; // Exibe o botão quando a largura for válida
+        document.getElementById('larguraInput').value = valor;
+        document.getElementById('btnConfirmar').style.display = 'block';
       } else {
-        larguraBox = "";
-        document.getElementById('btnConfirmar').style.display = 'none'; // Esconde o botão se a largura for inválida
+        document.getElementById('btnConfirmar').style.display = 'none';
       }
-    }
-
-    function enviarWhatsapp() {
-      const numeroWhatsapp = "+553598404619"; // Substitua pelo número do WhatsApp
-      const mensagem = encodeURIComponent(
-        `*Confirmação do Pedido - Espelho*\n` +
-        `📛 *Nome:* {{ usuario.nome }}\n` +
-        `📱 *Telefone:* {{ usuario.telefone }}\n` +
-        `📧 *Email:* {{ usuario.email }}\n` +
-        `🏠 *Endereço:* {{ usuario.endereco or "Não informado" }}\n` +
-        `🏙️ *Cidade:* {{ usuario.cidade or "Não informado" }}\n` +
-        `📮 *CEP:* {{ usuario.cep or "Não informado" }}\n` +
-        `🚪 *Tipo de Produto:* {{ usuario.tipo or "Não informado" }}\n\n` +
-        `📦 *Espelho:*\n` +
-        `- *Modelo:* ${modeloSelecionado}\n` +
-        `- *Tipo:* ${tipoSelecionado}\n` +
-        `- *Largura:* ${larguraBox}\n` +
-        `Confirma seu pedido? Entre em contato para finalizar!`
-      );
-
-      const linkWhatsapp = `https://wa.me/${numeroWhatsapp}?text=${mensagem}`;
-      window.open(linkWhatsapp, "_blank");
     }
   </script>
 

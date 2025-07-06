@@ -20,43 +20,25 @@
             background-position: center;
             background-repeat: no-repeat;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: center;   /* Centraliza horizontalmente */
+            align-items: center;       /* Centraliza verticalmente */
             text-align: center;
             color: white;
             position: relative;
-            margin-bottom: 1cm;
         }
 
         header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
             align-items: center;
-            pointer-events: none;
-        }
-
-        .logo-container {
-            margin-top: 20px;
-            pointer-events: auto;
-        }
-
-        .logo-container img {
-            max-width: 150px;
-
-            color: #ad0e0e;
+            justify-content: center; /* Garante centralização vertical dos itens internos */
+            gap: 20px;
         }
 
         nav {
             pointer-events: auto;
             position: relative;
-            top: -30px;
+            top: 0; /* Removido o deslocamento vertical */
         }
 
         header h1 {
@@ -68,12 +50,14 @@
 
         nav ul {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-direction: column; /* Vertical */
+            align-items: center;    /* Centraliza horizontalmente */
+            justify-content: center;/* Centraliza verticalmente, se necessário */
             gap: 30px;
             padding: 0;
             margin: 0;
             list-style: none;
+            text-align: center;
         }
 
         nav ul li a {
@@ -81,7 +65,7 @@
             background: rgb(189, 182, 182);
             color: black;
             padding: 10px 20px;
-            border-radius: 50px;
+            border-radius: 100px;
             font-weight: bold;
             width: auto;
             text-align: center;
@@ -96,7 +80,6 @@
 
         .galeria {
             width: 100%;
-            margin-left: 0;
             justify-content: center;
             gap: 10px;
             display: flex;
@@ -134,7 +117,7 @@
             }
 
             nav {
-                top: -50px;
+                top: 20px;
             }
 
             .galeria img {
@@ -176,9 +159,6 @@
 
 <section style="background-image: url('{{ url_for('static', filename='img/fundo.jpg') }}');">
     <header>
-        <div class="logo-container">
-            <img src="{{ url_for('static', filename='img/logo-sam.jpg') }}" alt="Logo Sam Esquadrias" />
-        </div>
         <nav>
             <ul>
                 <li><a href="{{ url_for('login') }}">Realize seu orçamento</a></li>
@@ -189,7 +169,6 @@
 </section>
 
 <section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
-    <div class="box"></div>
     <div class="galeria">
         <button onclick="anterior()">❮</button>
         <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1" />

@@ -212,6 +212,25 @@
   </footer>
 
   <script>
+    // Função para tratar campos vazios, exibir "Não informado"
+    function campoNaoInformado(valor) {
+      if (!valor || valor.trim() === "") {
+        return "Não informado";
+      }
+      return valor;
+    }
+
+    // Recebe dados do backend, usando Jinja para passar dados para JS
+    const usuario = {
+      nome: campoNaoInformado("{{ usuario.nome | default('') }}"),
+      telefone: campoNaoInformado("{{ usuario.telefone | default('') }}"),
+      email: campoNaoInformado("{{ usuario.email | default('') }}"),
+      endereco: campoNaoInformado("{{ usuario.endereco | default('') }}"),
+      cidade: campoNaoInformado("{{ usuario.cidade | default('') }}"),
+      cep: campoNaoInformado("{{ usuario.cep | default('') }}"),
+      tipo: campoNaoInformado("{{ usuario.tipo | default('') }}")
+    };
+
     let modeloSelecionado = "";
     let tipoSelecionado = "";
     let larguraBox = "";
@@ -262,22 +281,20 @@
       // Gerando a mensagem para o WhatsApp
       const numeroWhatsapp = "+553598404619"; // Substitua pelo número do WhatsApp
       const mensagem = encodeURIComponent(
-        `*Confirmação do Pedido - Box*\n` +
-        `📛 *Nome:* {{ usuario.nome }}\n` +
-        `📱 *Telefone:* {{ usuario.telefone }}\n` +
-        `📧 *Email:* {{ usuario.email }}\n` +
-        `🏠 *Endereço:* {{ usuario.endereco or "Não informado" }}\n` +
-        `🏙️ *Cidade:* {{ usuario.cidade or "Não informado" }}\n` +
-        `📮 *CEP:* {{ usuario.cep or "Não informado" }}\n` +
-        `🚪 *Tipo de Produto:* {{ usuario.tipo or "Não informado" }}\n\n` +
-        `📦 *Box:*\n` +
-        `- *Modelo:* ${modeloSelecionado}\n` +
-        `- *Tipo:* ${tipoSelecionado}\n` +
-        `- *Largura:* ${larguraBox}\n` +
-        `- *Vidro:* ${vidroSelecionado}\n\n` +
-        `Confirma seu pedido? Entre em contato para finalizar!`
+        "*Confirma\u00E7\u00E3o do Pedido - Box*\n" +
+        "\uD83D\uDCDB *Nome:* " + usuario.nome + "\n" +
+        "\uD83D\uDCDE *Telefone:* " + usuario.telefone + "\n" +
+        "\uD83C\uDFE0 *Endere\u00E7o:* " + usuario.endereco + "\n" +
+        "\uD83C\uDFD9 *Cidade:* " + usuario.cidade + "\n" +
+        "\uD83D\uDCEC *CEP:* " + usuario.cep + "\n" +
+        "\uD83D\uDEAA *Tipo de Produto:* " + usuario.tipo + "\n\n" +
+        "\uD83D\uDCE6 *Box:*\n" +
+        "- *Modelo:* " + modeloSelecionado + "\n" +
+        "- *Tipo:* " + tipoSelecionado + "\n" +
+        "- *Largura:* " + larguraBox + "\n" +
+        "- *Vidro:* " + vidroSelecionado + "\n\n" +
+        "Confirma seu pedido? Entre em contato para finalizar!"
       );
-
       const linkWhatsapp = `https://wa.me/${numeroWhatsapp}?text=${mensagem}`;
 
       window.open(linkWhatsapp, "_blank");

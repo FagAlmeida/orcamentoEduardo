@@ -1,222 +1,237 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Home - Sam Esquadrias (Mobile)</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            font-family: Arial, sans-serif;
-            height: 100%;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home - Sam Esquadrias (Mobile)</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+      height: 100%;
+    }
 
-        section {
-            width: 100%;
-            height: 100vh;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: center;   /* Centraliza horizontalmente */
-            align-items: center;       /* Centraliza verticalmente */
-            text-align: center;
-            color: white;
-            position: relative;
-        }
+    section {
+      width: 100%;
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      margin-bottom: 30px;
+    }
 
-        header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center; /* Garante centralização vertical dos itens internos */
-            gap: 20px;
-        }
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
 
-        nav {
-            pointer-events: auto;
-            position: relative;
-            top: 0; /* Removido o deslocamento vertical */
-        }
+    nav {
+      pointer-events: auto;
+      position: relative;
+      top: 0;
+    }
 
-        header h1 {
-            margin: 10px 0;
-            font-size: 1.5em;
-            color: #fff;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-        }
+    header h1 {
+      margin: 10px 0;
+      font-size: 1.5em;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
 
-        nav ul {
-            display: flex;
-            flex-direction: column; /* Vertical */
-            align-items: center;    /* Centraliza horizontalmente */
-            justify-content: center;/* Centraliza verticalmente, se necessário */
-            gap: 30px;
-            padding: 0;
-            margin: 0;
-            list-style: none;
-            text-align: center;
-        }
+    nav ul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      text-align: center;
+    }
 
-        nav ul li a {
-            text-decoration: none;
-            background: rgb(189, 182, 182);
-            color: black;
-            padding: 10px 20px;
-            border-radius: 100px;
-            font-weight: bold;
-            width: auto;
-            text-align: center;
-            display: inline-block;
-            transition: background-color 0.3s, color 0.3s;
-        }
+    nav ul li a {
+      text-decoration: none;
+      background: rgb(189, 182, 182);
+      color: black;
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-weight: bold;
+      width: auto;
+      text-align: center;
+      display: inline-block;
+      transition: background-color 0.3s, color 0.3s;
+    }
 
-        nav ul li a:hover {
-            background: #fff;
-            color: #155396;
-        }
+    nav ul li a:hover {
+      background: #fff;
+      color: #155396;
+    }
 
-        .galeria {
-            width: 100%;
-            justify-content: center;
-            gap: 10px;
-            display: flex;
-            align-items: center;
-        }
+    .galeria {
+      width: 100%;
+      justify-content: center;
+      gap: 10px;
+      display: flex;
+      align-items: center;
+    }
 
-        .galeria img {
-            width: 300px;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
+    .galeria img {
+      width: 270px;
+      height: 270px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
 
-        .galeria button {
-            background-color: #700202;
-            color: white;
-            border: none;
-            padding: 8px 8px;
-            font-size: 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    .galeria button {
+      background-color: #700202;
+      color: white;
+      border: none;
+      padding: 8px 8px;
+      font-size: 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-        @media (min-width: 768px) {
-            header h1 {
-                font-size: 2em;
-            }
+    @media (min-width: 768px) {
+      header h1 {
+        font-size: 2em;
+      }
 
-            nav ul {
-                flex-direction: row;
-                gap: 40px;
-            }
+      nav ul {
+        flex-direction: row;
+        gap: 40px;
+      }
 
-            nav {
-                top: 20px;
-            }
+      nav {
+        top: 20px;
+      }
 
-            .galeria img {
-                width: 60%;
-            }
+      .galeria img {
+        width: 60%;
+      }
 
-            .galeria button {
-                padding: 10px 15px;
-                font-size: 18px;
-            }
-        }
+      .galeria button {
+        padding: 10px 15px;
+        font-size: 18px;
+      }
+    }
 
-        @media (min-width: 1024px) {
-            header h1 {
-                font-size: 2.5em;
-            }
+    @media (min-width: 1024px) {
+      header h1 {
+        font-size: 2.5em;
+      }
 
-            nav ul {
-                gap: 60px;
-            }
+      nav ul {
+        gap: 60px;
+      }
 
-            .galeria {
-                gap: 30px;
-            }
+      .galeria {
+        gap: 30px;
+      }
 
-            .galeria img {
-                width: 400px;
-                height: 400px;
-            }
+      .galeria img {
+        width: 400px;
+        height: 400px;
+      }
 
-            .galeria button {
-                padding: 12px 20px;
-                font-size: 20px;
-            }
-        }
+      .galeria button {
+        padding: 12px 20px;
+        font-size: 20px;
+      }
+    }
 
-        /* Estilo do ícone flutuante Instagram */
-        .instagram-flutuante {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 50%;
-            padding: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            z-index: 1000;
-            cursor: pointer;
-        }
+    .instagram-flutuante {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: transparent;
+      border-radius: 50%;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+      cursor: pointer;
+    }
 
-        .instagram-flutuante:hover {
-            background: #E1306C;
-            transform: scale(1.1);
-        }
+    .instagram-flutuante:hover {
+      background: #E1306C;
+      transform: scale(1.1);
+    }
 
-        .instagram-flutuante svg {
-            display: block;
-        }
-    </style>
+    .instagram-flutuante svg {
+      display: block;
+    }
+
+    /* Rodapé */
+    footer.rodape {
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    footer.rodape p {
+      margin: 5px 0;
+    }
+  </style>
 </head>
 <body>
 
 <section style="background-image: url('{{ url_for('static', filename='img/fundo.jpg') }}');">
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('login') }}">Realize seu orçamento</a></li>
-                <li><a href="#album1">Conhecer meus trabalhos</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('login') }}">Realize seu orçamento</a></li>
+        <li><a href="#album1">Conhecer meus trabalhos</a></li>
+      </ul>
+    </nav>
+  </header>
 </section>
 
 <section id="album1" style="background-image: url('{{ url_for('static', filename='img/fundo2.jpg') }}');">
-    <div class="galeria">
-        <button onclick="anterior()">❮</button>
-        <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1" />
-        <button onclick="proximo()">❯</button>
-    </div>
+  <div class="galeria">
+    <button onclick="anterior()">❮</button>
+    <img id="foto" src="{{ url_for('static', filename='img/trabalho1.jpg') }}" alt="Trabalho 1" />
+    <button onclick="proximo()">❯</button>
+  </div>
 </section>
 
 <section style="background-image: url('{{ url_for('static', filename='img/fundo4.jpg') }}');">
-    <div class="galeria">
-        <button onclick="anterior2()">❮</button>
-        <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1" />
-        <button onclick="proximo2()">❯</button>
-    </div>
+  <div class="galeria">
+    <button onclick="anterior2()">❮</button>
+    <img id="foto2" src="{{ url_for('static', filename='img/servico1.jpg') }}" alt="Serviço 1" />
+    <button onclick="proximo2()">❯</button>
+  </div>
 </section>
 
 <section style="background-image: url('{{ url_for('static', filename='img/fundo5.jpg') }}');">
-    <div class="galeria">
-        <button onclick="anterior3()">❮</button>
-        <img id="foto3" src="{{ url_for('static', filename='img/galeria4.jpg') }}" alt="Galeria 3 Imagem 1" />
-        <button onclick="proximo3()">❯</button>
-    </div>
+  <div class="galeria">
+    <button onclick="anterior3()">❮</button>
+    <img id="foto3" src="{{ url_for('static', filename='img/galeria4.jpg') }}" alt="Galeria 3 Imagem 1" />
+    <button onclick="proximo3()">❯</button>
+  </div>
 </section>
+
 
 <!-- Ícone flutuante do Instagram -->
 <a href="https://www.instagram.com/sam_esquadrias.vidros?igsh=amt4N2t3aG1ieGZs" target="_blank" rel="noopener" class="instagram-flutuante" aria-label="Instagram">
@@ -225,77 +240,72 @@
   </svg>
 </a>
 
+<!-- Rodapé -->
+<footer class="rodape">
+  <p>&copy; 2025 Sam Esquadrias. Todos os direitos reservados.</p>
+  <p>Desenvolvido por Flavia Almeida</p>
+</footer>
+
 <script>
-    // Galeria 1
-    const imagens = [
-        "{{ url_for('static', filename='img/trabalho1.jpg') }}",
-        "{{ url_for('static', filename='img/trabalho2.jpg') }}",
-        "{{ url_for('static', filename='img/trabalho3.jpg') }}",
-        "{{ url_for('static', filename='img/trabalho4.jpg') }}"
-    ];
-    let indice = 0;
+  // JS da galeria (sem alterações)
+  const imagens = [
+    "{{ url_for('static', filename='img/trabalho1.jpg') }}",
+    "{{ url_for('static', filename='img/trabalho2.jpg') }}",
+    "{{ url_for('static', filename='img/trabalho3.jpg') }}",
+    "{{ url_for('static', filename='img/trabalho4.jpg') }}"
+  ];
+  let indice = 0;
+  function atualizarImagem() {
+    document.getElementById('foto').src = imagens[indice];
+  }
+  function proximo() {
+    indice = (indice + 1) % imagens.length;
+    atualizarImagem();
+  }
+  function anterior() {
+    indice = (indice - 1 + imagens.length) % imagens.length;
+    atualizarImagem();
+  }
 
-    function atualizarImagem() {
-        document.getElementById('foto').src = imagens[indice];
-    }
+  const imagens2 = [
+    "{{ url_for('static', filename='img/servico1.jpg') }}",
+    "{{ url_for('static', filename='img/servico2.jpg') }}",
+    "{{ url_for('static', filename='img/servico3.jpg') }}",
+    "{{ url_for('static', filename='img/servico4.jpg') }}"
+  ];
+  let indice2 = 0;
+  function atualizarImagem2() {
+    document.getElementById('foto2').src = imagens2[indice2];
+  }
+  function proximo2() {
+    indice2 = (indice2 + 1) % imagens2.length;
+    atualizarImagem2();
+  }
+  function anterior2() {
+    indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
+    atualizarImagem2();
+  }
 
-    function proximo() {
-        indice = (indice + 1) % imagens.length;
-        atualizarImagem();
-    }
-
-    function anterior() {
-        indice = (indice - 1 + imagens.length) % imagens.length;
-        atualizarImagem();
-    }
-
-    // Galeria 2
-    const imagens2 = [
-        "{{ url_for('static', filename='img/servico1.jpg') }}",
-        "{{ url_for('static', filename='img/servico2.jpg') }}",
-        "{{ url_for('static', filename='img/servico3.jpg') }}",
-        "{{ url_for('static', filename='img/servico4.jpg') }}"
-    ];
-    let indice2 = 0;
-
-    function atualizarImagem2() {
-        document.getElementById('foto2').src = imagens2[indice2];
-    }
-
-    function proximo2() {
-        indice2 = (indice2 + 1) % imagens2.length;
-        atualizarImagem2();
-    }
-
-    function anterior2() {
-        indice2 = (indice2 - 1 + imagens2.length) % imagens2.length;
-        atualizarImagem2();
-    }
-
-    // Galeria 3
-    const imagens3 = [
-        "{{ url_for('static', filename='img/galeria4.jpg') }}",
-        "{{ url_for('static', filename='img/galeria4-1.jpg') }}",
-        "{{ url_for('static', filename='img/galeria4-2.jpg') }}",
-        "{{ url_for('static', filename='img/galeria4-3.jpg') }}",
-        "{{ url_for('static', filename='img/galeria4-4.jpg') }}",
-        "{{ url_for('static', filename='img/galeria4-5.jpg') }}"
-    ];
-    let indice3 = 0;
-
-    function atualizarImagem3() {
-        document.getElementById('foto3').src = imagens3[indice3];
-    }
-
-    function proximo3() {
-        indice3 = (indice3 + 1) % imagens3.length;
-        atualizarImagem3();
-    }
-
-    function anterior3() {
-        indice3 = (indice3 - 1 + imagens3.length) % imagens3.length;
-        atualizarImagem3();
-    }
+  const imagens3 = [
+    "{{ url_for('static', filename='img/galeria4.jpg') }}",
+    "{{ url_for('static', filename='img/galeria4-1.jpg') }}",
+    "{{ url_for('static', filename='img/galeria4-2.jpg') }}",
+    "{{ url_for('static', filename='img/galeria4-3.jpg') }}",
+    "{{ url_for('static', filename='img/galeria4-4.jpg') }}",
+    "{{ url_for('static', filename='img/galeria4-5.jpg') }}"
+  ];
+  let indice3 = 0;
+  function atualizarImagem3() {
+    document.getElementById('foto3').src = imagens3[indice3];
+  }
+  function proximo3() {
+    indice3 = (indice3 + 1) % imagens3.length;
+    atualizarImagem3();
+  }
+  function anterior3() {
+    indice3 = (indice3 - 1 + imagens3.length) % imagens3.length;
+    atualizarImagem3();
+  }
 </script>
 
 </body>

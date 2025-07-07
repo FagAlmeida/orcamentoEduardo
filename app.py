@@ -36,6 +36,10 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/termos.html')
+def termos():
+    return render_template('termos.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     erro = None

@@ -49,12 +49,23 @@
       margin-bottom: 15px;
       text-align: center;
     }
+    .btn-termos {
+      background-color: #444444;
+      color: white;
+      border: none;
+      margin-top: 10px;
+    }
+    .btn-termos:hover {
+      background-color: #666666;
+      color: white;
+    }
   </style>
 </head>
+
 <body>
   <div class="login-container">
     <a href="{{ url_for('inicial') }}">
-    <img src="{{ url_for('static', filename='img/logo-sam.jpg') }}" alt="Logo Sam" class="logo-img">
+      <img src="{{ url_for('static', filename='img/logo-sam.jpg') }}" alt="Logo Sam" class="logo-img">
     </a>
     <h2 class="login-title">Entrar</h2>
     {% if erro %}
@@ -67,6 +78,7 @@
       </div>
       <button type="submit" class="btn btn-login w-100">Entrar</button>
     </form>
+    <button onclick="location.href='/termos.html'" class="btn btn-termos w-100">Termos e Condições</button>
     <div class="register-link">
       <a href="/register">Não tem acesso? Cadastre-se</a>
     </div>

@@ -13,10 +13,16 @@ usuarios_collection = mongo.db.usuarios
 # CABEÇALHOS DE SEGURANÇA
 @app.after_request
 def aplicar_cabecalhos_de_seguranca(response):
-    response.headers["Content-Security-Policy"] = "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:;"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "img-src 'self' data: https:; "
+        "script-src 'self' 'unsafe-inline' https:; "
+        "style-src 'self' 'unsafe-inline' https:;"
+    )
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
     return response
 
 @app.route('/', methods=['GET'])

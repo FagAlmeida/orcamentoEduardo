@@ -68,20 +68,41 @@
       <img src="{{ url_for('static', filename='img/logo-sam.jpg') }}" alt="Logo Sam" class="logo-img">
     </a>
     <h2 class="login-title">Entrar</h2>
+
     {% if erro %}
       <div class="error">{{ erro }}</div>
     {% endif %}
+
     <form method="POST" action="/login">
       <div class="mb-3">
         <label for="telefone" class="form-label">Número de Telefone</label>
         <input type="text" name="telefone" id="telefone" class="form-control" placeholder="Ex: 11987654321" required>
       </div>
-      <button type="submit" class="btn btn-login w-100">Entrar</button>
+
+      <!-- Checkbox de aceite -->
+      <div class="form-check d-flex align-items-center mb-3">
+        <input class="form-check-input me-2" type="checkbox" id="aceitarTermos" onchange="habilitarBotao()">
+        <label class="form-check-label" for="aceitarTermos">
+          Li e aceito os termos e condições de uso.
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-login w-100" id="btnEntrar" disabled>Entrar</button>
     </form>
+
     <button onclick="location.href='/termos.html'" class="btn btn-termos w-100">Termos e Condições</button>
+
     <div class="register-link">
       <a href="/register">Não tem acesso? Cadastre-se</a>
     </div>
   </div>
+
+  <script>
+    function habilitarBotao() {
+      const checkbox = document.getElementById('aceitarTermos');
+      const botao = document.getElementById('btnEntrar');
+      botao.disabled = !checkbox.checked;
+    }
+  </script>
 </body>
 </html>

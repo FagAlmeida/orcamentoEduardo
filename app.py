@@ -8,8 +8,16 @@ app.secret_key = 'sua_chave_secreta_aqui'
 # Configuração do MongoDB
 app.config["MONGO_URI"] = "mongodb+srv://fagalmeida:1234@cluster0.xm9sz.mongodb.net/meu_banco?retryWrites=true&w=majority"
 mongo = PyMongo(app)
-
 usuarios_collection = mongo.db.usuarios
+
+# CABEÇALHOS DE SEGURANÇA
+@app.after_request
+def aplicar_cabecalhos_de_seguranca(response):
+    response.headers["Content-Security-Policy"] = "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:;"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
 
 @app.route('/', methods=['GET'])
 def inicial():
@@ -52,11 +60,9 @@ def register():
         cep = request.form.get('cep')
         telefone = request.form.get('telefone')
 
-        # Aqui você pode adicionar validações, ex:
         if not (nome and cpf and endereco and numero and cidade and cep and telefone):
             erro = "Por favor, preencha todos os campos."
         else:
-            # Verificar se já existe usuário com esse telefone ou cpf, para evitar duplicidade
             if usuarios_collection.find_one({"telefone": telefone}):
                 erro = "Telefone já cadastrado."
             else:
@@ -68,9 +74,9 @@ def register():
                     "cidade": cidade,
                     "cep": cep,
                     "telefone": telefone,
-                    "tipo": "box"  # ou o que fizer sentido
+                    "tipo": "box"
                 })
-                return redirect(url_for('login'))  # ou página inicial
+                return redirect(url_for('login'))
 
     return render_template('register.html', erro=erro)
 
@@ -85,7 +91,7 @@ def infop():
         campos_para_atualizar = {}
         for campo in ['endereco', 'numero', 'cidade', 'cep', 'tipo']:
             valor = request.form.get(campo)
-            if valor:  # só atualiza se tiver valor preenchido
+            if valor:
                 campos_para_atualizar[campo] = valor
 
         if campos_para_atualizar:
@@ -94,7 +100,6 @@ def infop():
                 {"$set": campos_para_atualizar}
             )
 
-        # Redireciona para a próxima rota com base no tipo de produto
         tipo = request.form.get('tipo')
         if tipo == 'box':
             return redirect(url_for('box'))
@@ -104,7 +109,6 @@ def infop():
             return redirect(url_for('porta'))
 
     return render_template('infop.html')
-
 
 @app.route('/box', methods=['GET', 'POST'])
 def box():
@@ -119,7 +123,6 @@ def box():
         largura = request.form.get('largura')
         vidro = request.form.get('vidro')
 
-        # Atualiza o documento do usuário com os dados do box
         usuarios_collection.update_one(
             {"telefone": telefone},
             {"$set": {
@@ -132,14 +135,11 @@ def box():
             }}
         )
 
-        # Recarrega o documento atualizado do usuário
         usuario = usuarios_collection.find_one({"telefone": telefone})
 
         def valor_ou_nao_informado(d, campo):
             v = d.get(campo)
-            if v is None or v == '' or v == 'null':
-                return 'Não informado'
-            return v
+            return 'Não informado' if v in (None, '', 'null') else v
 
         endereco = valor_ou_nao_informado(usuario, 'endereco')
         numero = valor_ou_nao_informado(usuario, 'numero')
@@ -167,16 +167,13 @@ Confirma seu pedido? Entre em contato para finalizar!
 """
 
         mensagem_encoded = urllib.parse.quote(mensagem.strip())
-        meu_numero = "+5535999999999"  # substitua pelo seu número com DDI e DDD
+        meu_numero = "+5535999999999"
         whatsapp_url = f"https://wa.me/{meu_numero}?text={mensagem_encoded}"
 
         return redirect(whatsapp_url)
 
-    # GET: carrega dados do usuário para exibir no formulário
     usuario = usuarios_collection.find_one({"telefone": telefone})
     return render_template('box.html', usuario=usuario)
-
-
 
 @app.route('/espelho', methods=['GET', 'POST'])
 def espelho():
@@ -192,7 +189,6 @@ def espelho():
         largura = request.form.get('largura')
         vidro = request.form.get('vidro')
 
-        # Atualiza os dados do usuário com as informações do espelho
         usuarios_collection.update_one(
             {"telefone": telefone},
             {"$set": {
@@ -205,7 +201,6 @@ def espelho():
             }}
         )
 
-        # Monta a mensagem para o WhatsApp (sem email)
         mensagem = f"""
         *Confirmação do Pedido - Espelho*
         📛 *Nome:* {usuario['nome']}
@@ -225,7 +220,7 @@ def espelho():
         """
 
         mensagem_encoded = urllib.parse.quote(mensagem.strip())
-        meu_numero = "+553598404619"  # Substitua pelo seu número com DDI e DDD
+        meu_numero = "+553598404619"
         whatsapp_url = f"https://wa.me/{meu_numero}?text={mensagem_encoded}"
         
         return redirect(whatsapp_url)
@@ -246,7 +241,6 @@ def porta():
         largura = request.form.get('largura')
         vidro = request.form.get('vidro')
 
-        # Atualiza o usuário com os dados da porta
         usuarios_collection.update_one(
             {"telefone": telefone},
             {"$set": {
@@ -257,7 +251,6 @@ def porta():
             }}
         )
 
-        # Monta a mensagem do WhatsApp
         mensagem = f"""*Confirmação do Pedido - Porta*\n
 📛 *Nome:* {usuario.get('nome')}\n
 📱 *Telefone:* {usuario.get('telefone')}\n
@@ -272,7 +265,7 @@ def porta():
 - *Vidro:* {vidro}\n
 Confirma seu pedido? Entre em contato para finalizar!"""
 
-        numero_whatsapp = '553598404619'  # Sem o + no link
+        numero_whatsapp = '553598404619'
         link = f"https://wa.me/{numero_whatsapp}?text={urllib.parse.quote(mensagem)}"
         return redirect(link)
 

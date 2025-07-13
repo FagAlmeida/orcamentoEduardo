@@ -15,13 +15,9 @@ usuarios_collection = mongo.db.usuarios
 def aplicar_cabecalhos_de_seguranca(response):
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
-        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://code.jquery.com; "
-        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; "
         "img-src 'self' data: https:; "
-        "object-src 'none'; "
-        "frame-ancestors 'none'; "
-        "base-uri 'self'; "
-        "form-action 'self';"
+        "script-src 'self' 'unsafe-inline' https:; "
+        "style-src 'self' 'unsafe-inline' https:;"
     )
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"

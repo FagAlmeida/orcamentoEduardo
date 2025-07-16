@@ -156,7 +156,6 @@
   <main>
     <p>Veja os modelos disponíveis e selecione o que melhor se adapta ao seu ambiente.</p>
 
-    <!-- Mensagem dinâmica do app.py -->
     <div class="mensagem">
       {{ mensagem }}
     </div>
@@ -212,7 +211,6 @@
   </footer>
 
   <script>
-    // Função para tratar campos vazios, exibir "Não informado"
     function campoNaoInformado(valor) {
       if (!valor || valor.trim() === "") {
         return "Não informado";
@@ -220,7 +218,10 @@
       return valor;
     }
 
-    // Recebe dados do backend, usando Jinja para passar dados para JS
+    function rolarParaFim() {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
     const usuario = {
       nome: campoNaoInformado("{{ usuario.nome | default('') }}"),
       telefone: campoNaoInformado("{{ usuario.telefone | default('') }}"),
@@ -246,6 +247,8 @@
       document.getElementById('campoLargura').style.display = 'none';
       document.getElementById('botaoConfirmar').style.display = 'none';
       document.getElementById('opcoesVidro').style.display = 'none';
+
+      rolarParaFim();
     }
 
     function selecionarTipo(tipo) {
@@ -253,6 +256,8 @@
       document.getElementById('campoLargura').style.display = 'block';
       document.getElementById('botaoConfirmar').style.display = 'none';
       document.getElementById('opcoesVidro').style.display = 'none';
+
+      rolarParaFim();
     }
 
     function verificarLargura() {
@@ -273,13 +278,13 @@
 
     function confirmarLargura() {
       document.getElementById('opcoesVidro').style.display = 'block';
+      rolarParaFim();
     }
 
     function selecionarVidro(vidro) {
       vidroSelecionado = vidro;
 
-      // Gerando a mensagem para o WhatsApp
-      const numeroWhatsapp = "+553598404619"; // Substitua pelo número do WhatsApp
+      const numeroWhatsapp = "+553598404619";
       const mensagem = encodeURIComponent(
         "*Confirma\u00E7\u00E3o do Pedido - Box*\n" +
         "\uD83D\uDCDB *Nome:* " + usuario.nome + "\n" +
@@ -296,7 +301,6 @@
         "Confirma seu pedido? Entre em contato para finalizar!"
       );
       const linkWhatsapp = `https://wa.me/${numeroWhatsapp}?text=${mensagem}`;
-
       window.open(linkWhatsapp, "_blank");
     }
   </script>

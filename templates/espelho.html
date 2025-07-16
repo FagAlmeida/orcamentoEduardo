@@ -190,6 +190,10 @@
   </footer>
 
   <script>
+    function rolarParaFim() {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
     function selecionarImagem(img) {
       const imagens = document.querySelectorAll('.imagem-opcao');
       imagens.forEach(imagem => imagem.classList.remove('selecionada'));
@@ -201,6 +205,8 @@
       document.getElementById('campoLargura').style.display = 'block';
       document.getElementById('dimensaoEspelho').value = "";
       document.getElementById('btnConfirmar').style.display = 'none';
+
+      rolarParaFim(); // 🔽 Rola para o final após escolher o modelo
     }
 
     function verificarLargura() {
@@ -210,6 +216,7 @@
       if (formato.test(valor)) {
         document.getElementById('larguraInput').value = valor;
         document.getElementById('btnConfirmar').style.display = 'block';
+        rolarParaFim(); // 🔽 Rola para o final após preencher corretamente
       } else {
         document.getElementById('btnConfirmar').style.display = 'none';
       }

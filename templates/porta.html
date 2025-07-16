@@ -202,6 +202,10 @@
     let vidroSelecionado = "";
     let larguraBox = "";
 
+    function rolarParaFim() {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
     function selecionarImagem(img) {
       document.querySelectorAll('.imagem-opcao').forEach(i => i.classList.remove('selecionada'));
       img.classList.add('selecionada');
@@ -211,15 +215,15 @@
       document.getElementById('campoLargura').style.display = 'block';
       document.getElementById('botaoConfirmar').style.display = 'none';
       document.getElementById('opcoesVidro').style.display = 'none';
+
+      rolarParaFim(); // 👇 Rola para o final ao selecionar imagem
     }
 
     function verificarLargura() {
       const valor = document.getElementById('larguraPorta').value.trim();
       const formatoUnico = /^\d+$/;
       const formatoDuplo = /^\d+\s*[xX]\s*\d+$/;
-
       const valido = formatoUnico.test(valor) || formatoDuplo.test(valor);
-
       document.getElementById('botaoConfirmar').style.display = valido ? 'inline-block' : 'none';
     }
 
@@ -228,12 +232,13 @@
       document.getElementById('campoLargura').style.display = 'none';
       document.getElementById('botaoConfirmar').style.display = 'inline-block';
       document.getElementById('opcoesVidro').style.display = 'block';
+
+      rolarParaFim(); // 👇 Rola para o final ao confirmar
     }
 
     function selecionarVidro(vidro) {
       vidroSelecionado = vidro;
 
-      // Gerando a mensagem para o WhatsApp
       const numeroWhatsapp = "+553598404619"; // Substitua pelo número do WhatsApp
       const mensagem = encodeURIComponent(
         `*Confirmação do Pedido - Porta*\n` +
@@ -252,7 +257,6 @@
       );
 
       const linkWhatsapp = `https://wa.me/${numeroWhatsapp}?text=${mensagem}`;
-
       window.open(linkWhatsapp, "_blank");
     }
   </script>

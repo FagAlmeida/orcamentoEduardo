@@ -1,16 +1,31 @@
 from flask import Flask, redirect, render_template, request, url_for, session
 from flask_pymongo import PyMongo
 import urllib.parse
+import os
 
 app = Flask(__name__)
-app.secret_key = 'sua_chave_secreta_aqui'
 
-# Configuração do MongoDB
-app.config["MONGO_URI"] = "mongodb+srv://fagalmeida:1234@cluster0.xm9sz.mongodb.net/meu_banco?retryWrites=true&w=majority"
+# IMPORTANTE: Nunca deixe a chave secreta hardcoded em produção!
+# Use variável de ambiente para definir a chave secreta segura
+app.secret_key = os.environ.get('SECRET_KEY', 'uma_chave_muito_forte_e_aleatoria')
+
+# Configuração do MongoDB - use variável de ambiente para segurança
+app.config["MONGO_URI"] = os.environ.get(
+    "MONGO_URI",
+    "mongodb+srv://fagalmeida:1234@cluster0.xm9sz.mongodb.net/meu_banco?retryWrites=true&w=majority"
+)
+
 mongo = PyMongo(app)
 usuarios_collection = mongo.db.usuarios
 
-# CABEÇALHOS DE SEGURANÇA
+# CONFIGURAÇÕES DE SEGURANÇA DOS COOKIES DE SESSÃO
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,   # Protege contra acesso via JavaScript (XSS)
+    SESSION_COOKIE_SECURE=True,     # Envia cookie só via HTTPS (deixe False se não usar HTTPS localmente)
+    SESSION_COOKIE_SAMESITE='Lax'   # Protege contra CSRF parcialmente
+)
+
+# CABEÇALHOS DE SEGURANÇA HTTP
 @app.after_request
 def aplicar_cabecalhos_de_seguranca(response):
     response.headers['Content-Security-Policy'] = (
@@ -26,7 +41,17 @@ def aplicar_cabecalhos_de_seguranca(response):
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"  # HSTS para HTTPS
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=()"               # Exemplo de política de permissões
     return response
+
+# FORÇA REDIRECIONAMENTO HTTP -> HTTPS (use só se HTTPS estiver ativo no servidor)
+@app.before_request
+def redirecionar_para_https():
+    # Se não estiver usando HTTPS, comente ou remova essa função para não bloquear localmente
+    if not request.is_secure and not app.debug:
+        url = request.url.replace("http://", "https://", 1)
+        return redirect(url, code=301)
 
 @app.route('/', methods=['GET'])
 def inicial():
@@ -290,4 +315,5 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
+    # Em produção, use um servidor como gunicorn e HTTPS configurado no servidor
     app.run(debug=True)

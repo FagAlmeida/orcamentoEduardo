@@ -2,6 +2,8 @@ from flask import Flask, redirect, render_template, request, url_for, session
 from flask_pymongo import PyMongo
 import urllib.parse
 import os
+from bson.objectid import ObjectId
+
 
 app = Flask(__name__)
 
@@ -56,6 +58,56 @@ def redirecionar_para_https():
 @app.route('/', methods=['GET'])
 def inicial():
     return render_template('inicial.html')
+
+@app.route('/solicitar', methods=['POST'])
+def solicitar():
+    # Aqui você já deve ter os campos do formulário
+    nome = request.form.get("nome")
+    telefone = request.form.get("telefone")
+    tipo = request.form.get("tipo")
+    modelo = request.form.get("modelo")
+    largura = request.form.get("largura")
+    vidro = request.form.get("vidro")
+    cpf = request.form.get("cpf")
+    endereco = request.form.get("endereco")
+    numero = request.form.get("numero")
+    cidade = request.form.get("cidade")
+    cep = request.form.get("cep")
+
+    # Monta documento
+    usuario = {
+        "nome": nome,
+        "cpf": cpf,
+        "endereco": endereco,
+        "numero": numero,
+        "cidade": cidade,
+        "cep": cep,
+        "telefone": telefone,
+        "tipo": tipo,
+        "espelho": {
+            "modelo": modelo,
+            "tipo": "Espelho" if tipo == "espelho" else "",
+            "largura": largura,
+            "vidro": vidro
+        }
+    }
+
+    # Salva no banco
+    usuarios_collection.insert_one(usuario)
+
+    # Redireciona para WhatsApp
+    whatsapp_url = f"https://wa.me/55{telefone}?text=Olá%20{nome},%20sua%20solicitação%20de%20{tipo}%20foi%20recebida."
+    return redirect(whatsapp_url)
+
+@app.route('/admin')
+def admin():
+    usuarios = list(usuarios_collection.find().sort("_id", -1))
+    return render_template("admin.html", usuarios=usuarios)
+
+@app.route('/admin/<id>')
+def admin_detalhes(id):
+    usuario = usuarios_collection.find_one({"_id": ObjectId(id)})
+    return render_template("detalhes.html", usuario=usuario)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
